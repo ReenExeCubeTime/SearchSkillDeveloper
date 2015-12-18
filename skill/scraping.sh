@@ -5,6 +5,7 @@ startTime=`date +%s`
 STEPS=(
     "scrap:skill:site:list"
     "scrap:skill:site:page"
+    "create:skill:site:structure"
 )
 
 for STEP in "${STEPS[@]}"

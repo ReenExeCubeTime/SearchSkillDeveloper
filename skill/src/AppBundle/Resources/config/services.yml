@@ -11,3 +11,11 @@ services:
   scrap_list_service:
     parent: conection_service
     class: AppBundle\Service\Scrap\ListScraper
+
+  skill.structure_service:
+    parent: conection_service
+    class: AppBundle\Service\SkillSite\StructureService
+
+  skill.analyze_structure_service:
+    parent: conection_service
+    class: AppBundle\Service\SkillSite\AnalyzeStructureService
