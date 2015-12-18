@@ -22,7 +22,7 @@ do
     done
 done
 
-app/console media:skill:analyze:structure
+bin/console skill:site:analyze:structure
 
 endTime=`date +%s`
 echo execution time was `expr $endTime - $startTime` s.
