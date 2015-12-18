@@ -26,11 +26,13 @@ class StructureService extends AbstractQueueService
         foreach ($pages as $path) {
             $html = $this->getCachedPage($path);
 
-            $data = $this->getPageData($html);
+            try {
+                $data = $this->getPageData($html);
 
-            $this->savePageData($path, $data);
-
-            $this->updateProcess($path);
+                $this->savePageData($path, $data);
+            } finally {
+                $this->updateProcess($path);
+            }
         }
     }
 
@@ -156,7 +158,7 @@ class StructureService extends AbstractQueueService
                 `skills` TEXT,
                 `achievement` TEXT,
                 `expect` TEXT
-            );
+            ) DEFAULT CHARACTER SET=utf8;
         ");
     }
 }
