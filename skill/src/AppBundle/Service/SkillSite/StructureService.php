@@ -10,8 +10,8 @@ class StructureService extends AbstractQueueService
     public function clear()
     {
         $this->connection->exec('
-            DROP TABLE IF EXISTS `skill_site_structure_queue`;
-            DROP TABLE IF EXISTS `skill_site_structure`;
+            DROP TABLE IF EXISTS `developer_queue`;
+            DROP TABLE IF EXISTS `developer`;
         ');
     }
 
@@ -97,7 +97,7 @@ class StructureService extends AbstractQueueService
     {
         return $this->connection
             ->fetchAll("
-                SELECT `path` FROM `skill_site_structure_queue`
+                SELECT `path` FROM `developer_queue`
                 WHERE `process` = 0
                 LIMIT $limit;
             ");
@@ -117,7 +117,7 @@ class StructureService extends AbstractQueueService
     {
         return $this->connection
             ->exec("
-                UPDATE `skill_site_structure_queue`
+                UPDATE `developer_queue`
                 SET `process` = 1
                 WHERE `path` = '$path'
             ");
@@ -126,7 +126,7 @@ class StructureService extends AbstractQueueService
     private function savePageData($path, array $data)
     {
         $data['path'] = $path;
-        $this->connection->insert('skill_site_structure', $data);
+        $this->connection->insert('developer', $data);
     }
 
     protected function createCache()
@@ -137,7 +137,7 @@ class StructureService extends AbstractQueueService
     protected function createProcess()
     {
         $this->connection->exec("
-            CREATE TABLE IF NOT EXISTS `skill_site_structure_queue` (
+            CREATE TABLE IF NOT EXISTS `developer_queue` (
                 `path` VARCHAR(255) PRIMARY KEY,
                 `process` TINYINT DEFAULT 0
             )
@@ -146,7 +146,7 @@ class StructureService extends AbstractQueueService
         ");
 
         $this->connection->exec("
-            CREATE TABLE IF NOT EXISTS `skill_site_structure`(
+            CREATE TABLE IF NOT EXISTS `developer`(
                 `id` INT PRIMARY KEY AUTO_INCREMENT,
                 `path` VARCHAR(255),
                 `city` VARCHAR(255),
