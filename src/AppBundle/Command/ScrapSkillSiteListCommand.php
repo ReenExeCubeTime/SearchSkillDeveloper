@@ -13,6 +13,6 @@ class ScrapSkillSiteListCommand extends QueueComand
 
     protected function getService()
     {
-        return $this->getContainer()->get('scrap_list_service');
+        return $this->getContainer()->get('pd.scrap_list_service');
     }
 }
