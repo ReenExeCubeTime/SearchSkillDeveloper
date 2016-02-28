@@ -1,10 +1,11 @@
 <?php
 
-namespace AppBundle\Service\Scrap;
+namespace AppBundle\Service\Scrap\D;
 
+use AppBundle\Service\Scrap\AbstractListScraper;
 use Symfony\Component\DomCrawler\Crawler;
 
-class ListScraper extends Scraper
+class ListScrapper extends AbstractListScraper
 {
     protected function process($limit)
     {

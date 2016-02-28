@@ -10,7 +10,7 @@ class CreateSkillSiteStructureCommand extends QueueComand
 
     protected function configure()
     {
-        $this->setName('create:skill:site:structure');
+        $this->setName('d:create:skill:site:structure');
     }
 
     protected function getService()
