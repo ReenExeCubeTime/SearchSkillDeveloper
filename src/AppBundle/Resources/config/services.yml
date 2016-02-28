@@ -9,8 +9,9 @@ services:
     class: AppBundle\Service\Scrap\PageScraper
 
   scrap_list_service:
+    abstract:  true
     parent: conection_service
-    class: AppBundle\Service\Scrap\ListScraper
+    class: AppBundle\Service\Scrap\AbstractListScraper
 
   skill.structure_service:
     parent: conection_service
@@ -19,3 +20,7 @@ services:
   skill.analyze_structure_service:
     parent: conection_service
     class: AppBundle\Service\SkillSite\AnalyzeStructureService
+
+  pd.scrap_list_service:
+    parent: scrap_list_service
+    class:  AppBundle\Service\Scrap\D\ListScrapper

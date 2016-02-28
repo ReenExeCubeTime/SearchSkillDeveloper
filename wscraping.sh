@@ -3,9 +3,9 @@
 startTime=`date +%s`
 
 STEPS=(
-    "scrap:skill:site:list"
-    "scrap:skill:site:page"
-    "create:skill:site:structure"
+    "w:scrap:skill:site:list"
+    "w:scrap:skill:site:page"
+    "w:create:skill:site:structure"
 )
 
 for STEP in "${STEPS[@]}"
