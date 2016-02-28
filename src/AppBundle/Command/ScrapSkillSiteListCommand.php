@@ -8,7 +8,7 @@ class ScrapSkillSiteListCommand extends QueueComand
 {
     protected function configure()
     {
-        $this->setName('scrap:skill:site:list');
+        $this->setName('d:scrap:skill:site:list');
     }
 
     protected function getService()
