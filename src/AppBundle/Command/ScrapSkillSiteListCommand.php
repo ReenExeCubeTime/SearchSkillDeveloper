@@ -8,11 +8,11 @@ class ScrapSkillSiteListCommand extends QueueComand
 {
     protected function configure()
     {
-        $this->setName('scrap:skill:site:list');
+        $this->setName('d:scrap:skill:site:list');
     }
 
     protected function getService()
     {
-        return $this->getContainer()->get('scrap_list_service');
+        return $this->getContainer()->get('pd.scrap_list_service');
     }
 }
