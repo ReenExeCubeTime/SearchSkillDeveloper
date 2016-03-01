@@ -24,7 +24,7 @@ services:
 
   pd.profile.list.storage:
     parent: conection_service
-    class: AppBundle\Service\Scrap\D\ProfileListStorage
+    class: AppBundle\Service\Scrap\D\ProfileListContentStorage
 
   pd.scrap_list_service:
     parent: scrap_list_service

@@ -3,9 +3,9 @@
 namespace AppBundle\Service\Scrap\D;
 
 use AppBundle\Service\ConnectionService;
-use AppBundle\Service\Scrap\ProfileListStorageInterface;
+use AppBundle\Service\Scrap\ProfileListContentStorageInterface;
 
-class ProfileListStorage extends ConnectionService implements ProfileListStorageInterface
+class ProfileListContentStorage extends ConnectionService implements ProfileListContentStorageInterface
 {
     public function getLast()
     {

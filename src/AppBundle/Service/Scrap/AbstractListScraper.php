@@ -12,11 +12,11 @@ abstract class AbstractListScraper extends Scraper
     protected $connection;
 
     /**
-     * @var ProfileListStorageInterface
+     * @var ProfileListContentStorageInterface
      */
     protected $profileListStorage;
 
-    public function __construct(Connection $connection, ProfileListStorageInterface $profileListStorage)
+    public function __construct(Connection $connection, ProfileListContentStorageInterface $profileListStorage)
     {
         $this->connection = $connection;
         $this->profileListStorage = $profileListStorage;

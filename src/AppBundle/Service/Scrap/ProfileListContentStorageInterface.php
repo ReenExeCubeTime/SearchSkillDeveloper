@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service\Scrap;
 
-interface ProfileListStorageInterface
+interface ProfileListContentStorageInterface
 {
     public function getLast();
 
