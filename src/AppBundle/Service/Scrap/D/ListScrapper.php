@@ -11,7 +11,7 @@ class ListScrapper extends AbstractListScraper
     {
         $client = $this->getClient();
 
-        if ($last = $this->getLast()) {
+        if ($last = $this->profileListStorage->getLast()) {
             $nextListPath = $this->getNextPage(new Crawler($last));
 
             if (empty($nextListPath)) {
@@ -29,7 +29,7 @@ class ListScrapper extends AbstractListScraper
                 return self::END;
             }
 
-            $this->saveListCache($nextListPath, $html);
+            $this->profileListStorage->save($nextListPath, $html);
 
             $crawler = new Crawler($html);
 
@@ -56,17 +56,6 @@ class ListScrapper extends AbstractListScraper
                 `process` TINYINT DEFAULT 0
             );
         ");
-    }
-
-    private function getLast()
-    {
-        return $this->connection
-            ->executeQuery("
-                SELECT `value` FROM `skill_site_list_cache`
-                ORDER BY `id` DESC
-                LIMIT 1;
-            ")
-            ->fetchColumn();
     }
 
     private function getNextPage(Crawler $crawler)
@@ -99,13 +88,5 @@ class ListScrapper extends AbstractListScraper
         }
 
         $this->connection->commit();
-    }
-
-    private function saveListCache($path, $value)
-    {
-        $this->connection->executeQuery("
-            INSERT INTO `skill_site_list_cache` (`path`, `value`)
-            VALUES (:path, :value)
-        ", compact('path', 'value'));
     }
 }

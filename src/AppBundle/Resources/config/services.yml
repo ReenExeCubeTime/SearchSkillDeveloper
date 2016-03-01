@@ -2,7 +2,8 @@ services:
   conection_service:
     abstract:  true
     class: AppBundle\Service\ConnectionService
-    arguments: ['@doctrine.dbal.default_connection']
+    arguments:
+      - '@doctrine.dbal.default_connection'
 
   scrap_page_service:
     parent: conection_service
@@ -21,6 +22,13 @@ services:
     parent: conection_service
     class: AppBundle\Service\SkillSite\AnalyzeStructureService
 
+  pd.profile.list.storage:
+    parent: conection_service
+    class: AppBundle\Service\Scrap\D\ProfileListStorage
+
   pd.scrap_list_service:
     parent: scrap_list_service
     class:  AppBundle\Service\Scrap\D\ListScrapper
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '@pd.profile.list.storage'
