@@ -27,8 +27,13 @@ services:
       - '@doctrine.dbal.default_connection'
       - '@pd.profile.list.content.storage'
 
+  pd.page_process:
+    parent: conection_service
+    class:  AppBundle\Service\Scrap\D\PageProcess
+
   pd.scrap_page_service:
     class: AppBundle\Service\Scrap\D\PageScraper
     arguments:
       - '@doctrine.dbal.default_connection'
       - '@pd.profile.content.storage'
+      - '@pd.page_process'

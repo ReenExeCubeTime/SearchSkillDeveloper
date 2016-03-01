@@ -18,15 +18,24 @@ abstract class AbstractPageScraper extends Scraper
      */
     protected $contentStorage;
 
-    public function __construct(Connection $connection, ProfileContentStorageInterface $contentStorage)
-    {
+    /**
+     * @var PageProcessInterface
+     */
+    protected $pageProcess;
+
+    public function __construct(
+        Connection $connection,
+        ProfileContentStorageInterface $contentStorage,
+        PageProcessInterface $pageProcess
+    ) {
         $this->connection = $connection;
         $this->contentStorage = $contentStorage;
+        $this->pageProcess = $pageProcess;
     }
 
     protected function process($limit)
     {
-        $pages = array_column($this->getPages($limit), 'path');
+        $pages = array_column($this->pageProcess->getNextList($limit), 'path');
 
         if (empty($pages)) {
             return self::END;
@@ -41,7 +50,7 @@ abstract class AbstractPageScraper extends Scraper
                 ->then(function (ResponseInterface $response) use ($path) {
                     $html = $response->getBody()->getContents();
                     $this->contentStorage->save($path, $html);
-                    $this->updateProcess($path);
+                    $this->pageProcess->exclude($path);
                 });
         }
 
@@ -64,25 +73,5 @@ abstract class AbstractPageScraper extends Scraper
                 `value` MEDIUMBLOB
             );
         ");
-    }
-
-    private function getPages($limit)
-    {
-        return $this->connection
-            ->fetchAll("
-                SELECT `path` FROM `skill_site_page_queue`
-                WHERE `process` = 0
-                LIMIT $limit;
-            ");
-    }
-
-    private function updateProcess($path)
-    {
-        return $this->connection
-            ->exec("
-                UPDATE `skill_site_page_queue`
-                SET `process` = 1
-                WHERE `path` = '$path'
-            ");
     }
 }
