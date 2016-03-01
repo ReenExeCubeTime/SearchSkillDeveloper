@@ -5,15 +5,6 @@ services:
     arguments:
       - '@doctrine.dbal.default_connection'
 
-  scrap_page_service:
-    parent: conection_service
-    class: AppBundle\Service\Scrap\PageScraper
-
-  scrap_list_service:
-    abstract:  true
-    parent: conection_service
-    class: AppBundle\Service\Scrap\AbstractListScraper
-
   skill.structure_service:
     parent: conection_service
     class: AppBundle\Service\SkillSite\StructureService
@@ -22,13 +13,22 @@ services:
     parent: conection_service
     class: AppBundle\Service\SkillSite\AnalyzeStructureService
 
-  pd.profile.list.storage:
+  pd.profile.list.content.storage:
     parent: conection_service
     class: AppBundle\Service\Scrap\D\ProfileListContentStorage
 
+  pd.profile.content.storage:
+    parent: conection_service
+    class: AppBundle\Service\Scrap\D\ProfileContentStorage
+
   pd.scrap_list_service:
-    parent: scrap_list_service
     class:  AppBundle\Service\Scrap\D\ListScrapper
     arguments:
       - '@doctrine.dbal.default_connection'
-      - '@pd.profile.list.storage'
+      - '@pd.profile.list.content.storage'
+
+  pd.scrap_page_service:
+    class: AppBundle\Service\Scrap\D\PageScraper
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - '@pd.profile.content.storage'
