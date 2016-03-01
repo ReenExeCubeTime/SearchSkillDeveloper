@@ -7,6 +7,11 @@ use Psr\Http\Message\ResponseInterface;
 
 class PageScraper extends Scraper
 {
+    /**
+     * @var ProfileContentStorageInterface
+     */
+    protected $contentStorage;
+
     protected function process($limit)
     {
         $pages = array_column($this->getPages($limit), 'path');
@@ -23,7 +28,7 @@ class PageScraper extends Scraper
                 ->getAsync($path)
                 ->then(function (ResponseInterface $response) use ($path) {
                     $html = $response->getBody()->getContents();
-                    $this->savePageCache($path, $html);
+                    $this->contentStorage->save($path, $html);
                     $this->updateProcess($path);
                 });
         }
@@ -67,10 +72,5 @@ class PageScraper extends Scraper
                 SET `process` = 1
                 WHERE `path` = '$path'
             ");
-    }
-
-    private function savePageCache($path, $value)
-    {
-        $this->connection->insert('skill_site_page_cache', compact('path', 'value'));
     }
 }

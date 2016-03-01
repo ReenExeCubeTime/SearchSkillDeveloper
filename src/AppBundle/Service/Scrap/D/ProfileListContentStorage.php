@@ -19,9 +19,6 @@ class ProfileListContentStorage extends ConnectionService implements ProfileList
 
     public function save($path, $value)
     {
-        $this->connection->executeQuery('
-            INSERT INTO `skill_site_list_cache` (`path`, `value`)
-            VALUES (:path, :value)
-        ', compact('path', 'value'));
+        $this->connection->insert('skill_site_list_cache', compact('path', 'value'));
     }
 }
