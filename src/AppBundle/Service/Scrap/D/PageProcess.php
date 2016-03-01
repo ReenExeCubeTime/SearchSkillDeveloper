@@ -10,11 +10,12 @@ class PageProcess extends ConnectionService implements PageProcessInterface
     public function getNextList($limit)
     {
         return $this->connection
-            ->fetchAll('
+            ->executeQuery("
                 SELECT `path` FROM `skill_site_page_queue`
                 WHERE `process` = 0
                 LIMIT $limit;
-            ');
+            ")
+            ->fetchAll(\PDO::FETCH_COLUMN);
     }
 
     public function exclude($path)

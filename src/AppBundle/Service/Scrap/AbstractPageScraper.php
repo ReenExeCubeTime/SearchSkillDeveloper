@@ -35,7 +35,7 @@ abstract class AbstractPageScraper extends Scraper
 
     protected function process($limit)
     {
-        $pages = array_column($this->pageProcess->getNextList($limit), 'path');
+        $pages = $this->pageProcess->getNextList($limit);
 
         if (empty($pages)) {
             return self::END;
