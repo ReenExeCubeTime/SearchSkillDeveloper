@@ -12,7 +12,7 @@ abstract class Scraper extends AbstractQueueService
     protected function getClient()
     {
         return new \GuzzleHttp\Client([
-            'base_uri'      => 'http://djinni.co/'
+            'base_uri'      => 'http://www.work.ua/'
         ]);
     }
 }
