@@ -33,7 +33,7 @@ services:
             - 'skill_site_page_queue'
 
     pd.scrap_list_service:
-        class:  AppBundle\Service\Scrap\D\ListScrapper
+        class:  AppBundle\Service\Scrap\ListScraper
         arguments:
             - '@pd.profile.list.content.storage'
             - '@pd.list.content.analyzer'

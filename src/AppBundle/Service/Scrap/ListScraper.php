@@ -1,12 +1,36 @@
 <?php
 
-namespace AppBundle\Service\Scrap\D;
+namespace AppBundle\Service\Scrap;
 
-use AppBundle\Service\Scrap\AbstractListScraper;
 use Symfony\Component\DomCrawler\Crawler;
 
-class ListScrapper extends AbstractListScraper
+class ListScraper extends Scraper
 {
+    /**
+     * @var ProfileListContentStorageInterface
+     */
+    protected $profileListStorage;
+
+    /**
+     * @var ListContentAnalyzerInterface
+     */
+    protected $contentAnalyzer;
+
+    /**
+     * @var PagePathQueue
+     */
+    protected $pagePathQueue;
+
+    public function __construct(
+        ProfileListContentStorageInterface $profileListStorage,
+        ListContentAnalyzerInterface $contentAnalyzer,
+        PagePathQueue $pagePathQueue
+    ) {
+        $this->profileListStorage = $profileListStorage;
+        $this->contentAnalyzer = $contentAnalyzer;
+        $this->pagePathQueue = $pagePathQueue;
+    }
+
     protected function process($limit)
     {
         $client = $this->getClient();
