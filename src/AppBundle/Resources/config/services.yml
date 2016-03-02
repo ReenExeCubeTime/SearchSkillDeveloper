@@ -1,26 +1,49 @@
 services:
-  conection_service:
-    abstract:  true
-    class: AppBundle\Service\ConnectionService
-    arguments: ['@doctrine.dbal.default_connection']
+    conection_service:
+        abstract:  true
+        class: AppBundle\Service\ConnectionService
+        arguments:
+            - '@doctrine.dbal.default_connection'
 
-  scrap_page_service:
-    parent: conection_service
-    class: AppBundle\Service\Scrap\PageScraper
+    skill.structure_service:
+        parent: conection_service
+        class: AppBundle\Service\SkillSite\StructureService
 
-  scrap_list_service:
-    abstract:  true
-    parent: conection_service
-    class: AppBundle\Service\Scrap\AbstractListScraper
+    skill.analyze_structure_service:
+        parent: conection_service
+        class: AppBundle\Service\SkillSite\AnalyzeStructureService
 
-  skill.structure_service:
-    parent: conection_service
-    class: AppBundle\Service\SkillSite\StructureService
+    pd.profile.list.content.storage:
+        class: AppBundle\Service\Scrap\ProfileListContentStorage
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - 'skill_site_list_cache'
 
-  skill.analyze_structure_service:
-    parent: conection_service
-    class: AppBundle\Service\SkillSite\AnalyzeStructureService
+    pd.profile.content.storage:
+        class: AppBundle\Service\Scrap\ProfileContentStorage
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - 'skill_site_page_cache'
 
-  pd.scrap_list_service:
-    parent: scrap_list_service
-    class:  AppBundle\Service\Scrap\D\ListScrapper
+    pd.list.content.analyzer:
+        class: AppBundle\Service\Scrap\D\ListContentAnalyzer
+
+    pd.page_path_process:
+        class: AppBundle\Service\Scrap\PagePathProcess
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - 'skill_site_page_queue'
+
+    pd.scrap_list_service:
+        class:  AppBundle\Service\Scrap\ListScraper
+        arguments:
+            - '@pd.profile.list.content.storage'
+            - '@pd.list.content.analyzer'
+            - '@pd.page_path_process'
+
+    pd.scrap_page_service:
+        class: AppBundle\Service\Scrap\PageScraper
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '@pd.profile.content.storage'
+            - '@pd.page_path_process'

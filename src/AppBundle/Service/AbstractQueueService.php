@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service;
 
-abstract class AbstractQueueService extends ConnectionService
+abstract class AbstractQueueService
 {
     const END = 1;
 

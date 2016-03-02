@@ -2,14 +2,11 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Command\Core\QueueComand;
+use AppBundle\Command\Core\QueueCommand;
 
-class ScrapSkillSiteListCommand extends QueueComand
+class ScrapSkillSiteListCommand extends QueueCommand
 {
-    protected function configure()
-    {
-        $this->setName('d:scrap:skill:site:list');
-    }
+    protected $name = 'd:scrap:skill:site:list';
 
     protected function getService()
     {

@@ -2,16 +2,13 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Command\Core\QueueComand;
+use AppBundle\Command\Core\QueueCommand;
 
-class CreateSkillSiteStructureCommand extends QueueComand
+class CreateSkillSiteStructureCommand extends QueueCommand
 {
-    protected $limit = 1000;
+    protected $defaultLimit = 1000;
 
-    protected function configure()
-    {
-        $this->setName('d:create:skill:site:structure');
-    }
+    protected $name = 'd:create:skill:site:structure';
 
     protected function getService()
     {

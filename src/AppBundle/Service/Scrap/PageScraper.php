@@ -4,12 +4,38 @@ namespace AppBundle\Service\Scrap;
 
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
+use Doctrine\DBAL\Connection;
 
 class PageScraper extends Scraper
 {
+    /**
+     * @var Connection
+     */
+    protected $connection;
+
+    /**
+     * @var ProfileContentStorage
+     */
+    protected $contentStorage;
+
+    /**
+     * @var PageProcessInterface
+     */
+    protected $pageProcess;
+
+    public function __construct(
+        Connection $connection,
+        ProfileContentStorage $contentStorage,
+        PageProcessInterface $pageProcess
+    ) {
+        $this->connection = $connection;
+        $this->contentStorage = $contentStorage;
+        $this->pageProcess = $pageProcess;
+    }
+
     protected function process($limit)
     {
-        $pages = array_column($this->getPages($limit), 'path');
+        $pages = $this->pageProcess->getNextList($limit);
 
         if (empty($pages)) {
             return self::END;
@@ -23,8 +49,8 @@ class PageScraper extends Scraper
                 ->getAsync($path)
                 ->then(function (ResponseInterface $response) use ($path) {
                     $html = $response->getBody()->getContents();
-                    $this->savePageCache($path, $html);
-                    $this->updateProcess($path);
+                    $this->contentStorage->save($path, $html);
+                    $this->pageProcess->exclude($path);
                 });
         }
 
@@ -41,36 +67,6 @@ class PageScraper extends Scraper
 
     protected function createCache()
     {
-        $this->connection->exec("
-            CREATE TABLE IF NOT EXISTS `skill_site_page_cache` (
-                `path` VARCHAR(255) PRIMARY KEY,
-                `value` MEDIUMBLOB
-            );
-        ");
-    }
-
-    private function getPages($limit)
-    {
-        return $this->connection
-            ->fetchAll("
-                SELECT `path` FROM `skill_site_page_queue`
-                WHERE `process` = 0
-                LIMIT $limit;
-            ");
-    }
-
-    private function updateProcess($path)
-    {
-        return $this->connection
-            ->exec("
-                UPDATE `skill_site_page_queue`
-                SET `process` = 1
-                WHERE `path` = '$path'
-            ");
-    }
-
-    private function savePageCache($path, $value)
-    {
-        $this->connection->insert('skill_site_page_cache', compact('path', 'value'));
+        $this->contentStorage->create();
     }
 }
