@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Service\Scrap\D;
+namespace AppBundle\Service\Scrap;
 
 use AppBundle\Service\Scrap\AbstractTableStorage;
 use AppBundle\Service\Scrap\ProfileListContentStorageInterface;

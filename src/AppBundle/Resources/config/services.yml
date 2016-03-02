@@ -14,7 +14,7 @@ services:
         class: AppBundle\Service\SkillSite\AnalyzeStructureService
 
     pd.profile.list.content.storage:
-        class: AppBundle\Service\Scrap\D\ProfileListContentStorage
+        class: AppBundle\Service\Scrap\ProfileListContentStorage
         arguments:
             - '@doctrine.dbal.default_connection'
             - 'skill_site_list_cache'
