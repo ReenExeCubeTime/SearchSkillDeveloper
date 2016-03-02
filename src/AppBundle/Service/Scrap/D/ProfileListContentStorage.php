@@ -2,15 +2,15 @@
 
 namespace AppBundle\Service\Scrap\D;
 
-use AppBundle\Service\ConnectionService;
+use AppBundle\Service\Scrap\AbstractTableStorage;
 use AppBundle\Service\Scrap\ProfileListContentStorageInterface;
 
-class ProfileListContentStorage extends ConnectionService implements ProfileListContentStorageInterface
+class ProfileListContentStorage extends AbstractTableStorage implements ProfileListContentStorageInterface
 {
     public function create()
     {
         $this->connection->exec("
-            CREATE TABLE IF NOT EXISTS `skill_site_list_cache` (
+            CREATE TABLE IF NOT EXISTS `$this->table` (
                 `id` INT(11) PRIMARY KEY AUTO_INCREMENT,
                 `path` VARCHAR(255),
                 `value` MEDIUMBLOB,
@@ -21,16 +21,16 @@ class ProfileListContentStorage extends ConnectionService implements ProfileList
 
     public function getLast()
     {
-        return $this->connection->executeQuery('
-                SELECT `value` FROM `skill_site_list_cache`
+        return $this->connection->executeQuery("
+                SELECT `value` FROM `$this->table`
                 ORDER BY `id` DESC
                 LIMIT 1;
-            ')
+            ")
             ->fetchColumn();
     }
 
     public function save($path, $value)
     {
-        $this->connection->insert('skill_site_list_cache', compact('path', 'value'));
+        $this->connection->insert($this->table, compact('path', 'value'));
     }
 }
