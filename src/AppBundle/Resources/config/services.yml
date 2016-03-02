@@ -24,12 +24,19 @@ services:
   pd.list.content.analyzer:
     class: AppBundle\Service\Scrap\D\ListContentAnalyzer
 
+  pd.page_path_queue:
+    class: AppBundle\Service\Scrap\PagePathQueue
+    arguments:
+      - '@doctrine.dbal.default_connection'
+      - 'skill_site_page_queue'
+
   pd.scrap_list_service:
     class:  AppBundle\Service\Scrap\D\ListScrapper
     arguments:
       - '@doctrine.dbal.default_connection'
       - '@pd.profile.list.content.storage'
       - '@pd.list.content.analyzer'
+      - '@pd.page_path_queue'
 
   pd.page_process:
     parent: conection_service

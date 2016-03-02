@@ -33,7 +33,7 @@ class ListScrapper extends AbstractListScraper
 
             $crawler = new Crawler($html);
 
-            $this->pushPageQueue($this->contentAnalyzer->getPageLinkCollection($crawler));
+            $this->pagePathQueue->push($this->contentAnalyzer->getPageLinkCollection($crawler));
 
             $nextListPath = $this->contentAnalyzer->getNextPage($crawler);
         } while (--$limit && $nextListPath);
@@ -41,36 +41,7 @@ class ListScrapper extends AbstractListScraper
 
     protected function createCache()
     {
-        $this->connection->exec("
-            CREATE TABLE IF NOT EXISTS `skill_site_list_cache` (
-                `id` INT(11) PRIMARY KEY AUTO_INCREMENT,
-                `path` VARCHAR(255),
-                `value` MEDIUMBLOB,
-                UNIQUE KEY (`path`)
-            );
-        ");
-
-        $this->connection->exec("
-            CREATE TABLE IF NOT EXISTS `skill_site_page_queue` (
-                `path` VARCHAR(255) PRIMARY KEY,
-                `process` TINYINT DEFAULT 0
-            );
-        ");
-    }
-
-    private function pushPageQueue(array $pathCollection)
-    {
-        $this->connection->beginTransaction();
-
-        $statement = $this->connection->prepare('
-            INSERT INTO `skill_site_page_queue` (`path`)
-            VALUES (:path)
-        ');
-
-        foreach ($pathCollection as $path) {
-            $statement->execute(compact('path'));
-        }
-
-        $this->connection->commit();
+        $this->profileListStorage->create();
+        $this->pagePathQueue->create();
     }
 }
