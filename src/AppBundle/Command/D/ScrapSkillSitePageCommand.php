@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Command;
+namespace AppBundle\Command\D;
 
 use AppBundle\Command\Core\QueueCommand;
 
