@@ -19,14 +19,14 @@ class PageScraper extends Scraper
     protected $contentStorage;
 
     /**
-     * @var PageProcess
+     * @var PageProcessInterface
      */
     protected $pageProcess;
 
     public function __construct(
         Connection $connection,
         ProfileContentStorage $contentStorage,
-        PageProcess $pageProcess
+        PageProcessInterface $pageProcess
     ) {
         $this->connection = $connection;
         $this->contentStorage = $contentStorage;

@@ -17,14 +17,14 @@ class ListScraper extends Scraper
     protected $contentAnalyzer;
 
     /**
-     * @var PagePathQueue
+     * @var PagePathQueueInterface
      */
     protected $pagePathQueue;
 
     public function __construct(
         ProfileListContentStorageInterface $profileListStorage,
         ListContentAnalyzerInterface $contentAnalyzer,
-        PagePathQueue $pagePathQueue
+        PagePathQueueInterface $pagePathQueue
     ) {
         $this->profileListStorage = $profileListStorage;
         $this->contentAnalyzer = $contentAnalyzer;

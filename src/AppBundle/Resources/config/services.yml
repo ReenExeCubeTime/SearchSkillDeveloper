@@ -28,8 +28,8 @@ services:
     pd.list.content.analyzer:
         class: AppBundle\Service\Scrap\D\ListContentAnalyzer
 
-    pd.page_path_queue:
-        class: AppBundle\Service\Scrap\PagePathQueue
+    pd.page_path_process:
+        class: AppBundle\Service\Scrap\PagePathProcess
         arguments:
             - '@doctrine.dbal.default_connection'
             - 'skill_site_page_queue'
@@ -39,17 +39,11 @@ services:
         arguments:
             - '@pd.profile.list.content.storage'
             - '@pd.list.content.analyzer'
-            - '@pd.page_path_queue'
-
-    pd.page_process:
-        class:  AppBundle\Service\Scrap\PageProcess
-        arguments:
-            - '@doctrine.dbal.default_connection'
-            - 'skill_site_page_queue'
+            - '@pd.page_path_process'
 
     pd.scrap_page_service:
         class: AppBundle\Service\Scrap\PageScraper
         arguments:
             - '@doctrine.dbal.default_connection'
             - '@pd.profile.content.storage'
-            - '@pd.page_process'
+            - '@pd.page_path_process'
