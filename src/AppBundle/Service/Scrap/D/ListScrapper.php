@@ -62,11 +62,13 @@ class ListScrapper extends AbstractListScraper
     {
         $this->connection->beginTransaction();
 
+        $statement = $this->connection->prepare('
+            INSERT INTO `skill_site_page_queue` (`path`)
+            VALUES (:path)
+        ');
+
         foreach ($pathCollection as $path) {
-            $this->connection->executeQuery("
-                INSERT INTO `skill_site_page_queue` (`path`)
-                VALUES (:path)
-            ", compact('path'));
+            $statement->execute(compact('path'));
         }
 
         $this->connection->commit();
