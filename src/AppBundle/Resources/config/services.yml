@@ -17,22 +17,26 @@ services:
         class: AppBundle\Service\Scrap\ProfileListContentStorage
         arguments:
             - '@doctrine.dbal.default_connection'
-            - 'skill_site_list_cache'
+            - 'pd_skill_site_list_cache'
 
     pd.profile.content.storage:
         class: AppBundle\Service\Scrap\ProfileContentStorage
         arguments:
             - '@doctrine.dbal.default_connection'
-            - 'skill_site_page_cache'
+            - 'pd_skill_site_page_cache'
 
     pd.list.content.analyzer:
-        class: AppBundle\Service\Scrap\D\ListContentAnalyzer
+        class: AppBundle\Service\Scrap\ListContentAnalyzer
+        arguments:
+            - '/developers/'
+            - '.next a'
+            - '.profile'
 
     pd.page_path_process:
         class: AppBundle\Service\Scrap\PagePathProcess
         arguments:
             - '@doctrine.dbal.default_connection'
-            - 'skill_site_page_queue'
+            - 'pd_skill_site_page_queue'
 
     pd.scrap_list_service:
         class:  AppBundle\Service\Scrap\ListScraper
@@ -47,3 +51,42 @@ services:
             - '@doctrine.dbal.default_connection'
             - '@pd.profile.content.storage'
             - '@pd.page_path_process'
+
+    pw.page_path_process:
+        class: AppBundle\Service\Scrap\PagePathProcess
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - 'pw_skill_site_page_queue'
+
+    pw.profile.list.content.storage:
+        class: AppBundle\Service\Scrap\ProfileListContentStorage
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - 'pw_skill_site_list_cache'
+
+    pw.profile.content.storage:
+        class: AppBundle\Service\Scrap\ProfileContentStorage
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - 'pw_skill_site_page_cache'
+
+    pw.list.content.analyzer:
+        class: AppBundle\Service\Scrap\ListContentAnalyzer
+        arguments:
+            - '/resumes-it/'
+            - '.perpageNavigation a'
+            - '.tblSearch .ttl a.bf'
+
+    pw.scrap_list_service:
+        class:  AppBundle\Service\Scrap\ListScraper
+        arguments:
+            - '@pw.profile.list.content.storage'
+            - '@pw.list.content.analyzer'
+            - '@pw.page_path_process'
+
+    pw.scrap_page_service:
+        class: AppBundle\Service\Scrap\PageScraper
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '@pw.profile.content.storage'
+            - '@pw.page_path_process'
