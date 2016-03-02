@@ -2,20 +2,8 @@
 
 namespace AppBundle\Service\Scrap;
 
-use Doctrine\DBAL\Connection;
-
-class PagePathQueue
+class PagePathQueue extends AbstractTableStorage
 {
-    protected $table;
-
-    protected $connection;
-
-    public function __construct(Connection $connection, $table)
-    {
-        $this->connection = $connection;
-        $this->table = $table;
-    }
-
     public function create()
     {
         $this->connection->exec("
