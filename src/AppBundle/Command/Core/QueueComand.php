@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class QueueComand extends ContainerAwareCommand
 {
-    protected $limit = 100;
+    protected $defaultLimit = 100;
     /**
      * @return \AppBundle\Service\AbstractQueueService
      */
@@ -20,7 +20,7 @@ abstract class QueueComand extends ContainerAwareCommand
     {
         $startTime = microtime(true);
 
-        $exitCode = $this->getService()->execute($this->limit);
+        $exitCode = $this->getService()->execute($this->defaultLimit);
 
         $duration = microtime(true) - $startTime;
         $memory = memory_get_usage(true);

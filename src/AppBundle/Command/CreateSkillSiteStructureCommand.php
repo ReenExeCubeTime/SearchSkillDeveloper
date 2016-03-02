@@ -6,7 +6,7 @@ use AppBundle\Command\Core\QueueComand;
 
 class CreateSkillSiteStructureCommand extends QueueComand
 {
-    protected $limit = 1000;
+    protected $defaultLimit = 1000;
 
     protected function configure()
     {
