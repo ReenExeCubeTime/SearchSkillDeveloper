@@ -10,12 +10,12 @@ class PageScraper extends Scraper
     /**
      * @var ProfileContentStorage
      */
-    protected $contentStorage;
+    private $contentStorage;
 
     /**
      * @var PageProcessInterface
      */
-    protected $pageProcess;
+    private $pageProcess;
 
     public function __construct(
         ProfileContentStorage $contentStorage,

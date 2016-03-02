@@ -9,17 +9,17 @@ class ListScraper extends Scraper
     /**
      * @var ProfileListContentStorageInterface
      */
-    protected $profileListStorage;
+    private $profileListStorage;
 
     /**
      * @var ListContentAnalyzerInterface
      */
-    protected $contentAnalyzer;
+    private $contentAnalyzer;
 
     /**
      * @var PagePathQueueInterface
      */
-    protected $pagePathQueue;
+    private $pagePathQueue;
 
     public function __construct(
         ProfileListContentStorageInterface $profileListStorage,
