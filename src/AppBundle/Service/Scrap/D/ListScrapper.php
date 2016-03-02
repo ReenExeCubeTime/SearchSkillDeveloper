@@ -12,14 +12,14 @@ class ListScrapper extends AbstractListScraper
         $client = $this->getClient();
 
         if ($last = $this->profileListStorage->getLast()) {
-            $nextListPath = $this->getNextPage(new Crawler($last));
+            $nextListPath = $this->contentAnalyzer->getNextPage(new Crawler($last));
 
             if (empty($nextListPath)) {
                 return self::END;
             }
 
         } else {
-            $nextListPath = '/developers/';
+            $nextListPath = $this->contentAnalyzer->getFirstPage();
         }
 
         do {
@@ -33,9 +33,9 @@ class ListScrapper extends AbstractListScraper
 
             $crawler = new Crawler($html);
 
-            $this->pushPageQueue($this->getPageLinkCollection($crawler));
+            $this->pushPageQueue($this->contentAnalyzer->getPageLinkCollection($crawler));
 
-            $nextListPath = $this->getNextPage($crawler);
+            $nextListPath = $this->contentAnalyzer->getNextPage($crawler);
         } while (--$limit && $nextListPath);
     }
 
@@ -56,24 +56,6 @@ class ListScrapper extends AbstractListScraper
                 `process` TINYINT DEFAULT 0
             );
         ");
-    }
-
-    private function getNextPage(Crawler $crawler)
-    {
-        $nextLinkCrawler = $crawler->filter('.next a');
-
-        if ($nextLinkCrawler->count()) {
-            return $nextLinkCrawler->attr('href');
-        }
-    }
-
-    private function getPageLinkCollection(Crawler $crawler)
-    {
-        return $crawler
-            ->filter('.profile')
-            ->each(function (Crawler $crawler) {
-                return $crawler->attr('href');
-            });
     }
 
     private function pushPageQueue(array $pathCollection)
