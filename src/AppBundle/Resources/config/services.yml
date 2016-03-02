@@ -35,7 +35,6 @@ services:
     pd.scrap_list_service:
         class:  AppBundle\Service\Scrap\D\ListScrapper
         arguments:
-            - '@doctrine.dbal.default_connection'
             - '@pd.profile.list.content.storage'
             - '@pd.list.content.analyzer'
             - '@pd.page_path_queue'
