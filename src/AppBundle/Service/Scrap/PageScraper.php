@@ -4,31 +4,23 @@ namespace AppBundle\Service\Scrap;
 
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
-use Doctrine\DBAL\Connection;
 
 class PageScraper extends Scraper
 {
     /**
-     * @var Connection
-     */
-    protected $connection;
-
-    /**
      * @var ProfileContentStorage
      */
-    protected $contentStorage;
+    private $contentStorage;
 
     /**
      * @var PageProcessInterface
      */
-    protected $pageProcess;
+    private $pageProcess;
 
     public function __construct(
-        Connection $connection,
         ProfileContentStorage $contentStorage,
         PageProcessInterface $pageProcess
     ) {
-        $this->connection = $connection;
         $this->contentStorage = $contentStorage;
         $this->pageProcess = $pageProcess;
     }
