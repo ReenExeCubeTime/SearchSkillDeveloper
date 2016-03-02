@@ -26,7 +26,18 @@ services:
             - 'skill_site_page_cache'
 
     pd.list.content.analyzer:
-        class: AppBundle\Service\Scrap\D\ListContentAnalyzer
+        class: AppBundle\Service\Scrap\ListContentAnalyzer
+        arguments:
+            - '/developers/'
+            - '.next a'
+            - '.profile'
+
+    pw.list.content.analyzer:
+        class: AppBundle\Service\Scrap\ListContentAnalyzer
+        arguments:
+            - '/resumes-it/'
+            - '.perpageNavigation a'
+            - '.tblSearch .ttl a.bf'
 
     pd.page_path_process:
         class: AppBundle\Service\Scrap\PagePathProcess
