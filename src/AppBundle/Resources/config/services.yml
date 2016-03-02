@@ -20,8 +20,10 @@ services:
             - 'skill_site_list_cache'
 
     pd.profile.content.storage:
-        parent: conection_service
-        class: AppBundle\Service\Scrap\D\ProfileContentStorage
+        class: AppBundle\Service\Scrap\ProfileContentStorage
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - 'skill_site_page_cache'
 
     pd.list.content.analyzer:
         class: AppBundle\Service\Scrap\D\ListContentAnalyzer
@@ -44,7 +46,7 @@ services:
         class:  AppBundle\Service\Scrap\D\PageProcess
 
     pd.scrap_page_service:
-        class: AppBundle\Service\Scrap\D\PageScraper
+        class: AppBundle\Service\Scrap\PageScraper
         arguments:
             - '@doctrine.dbal.default_connection'
             - '@pd.profile.content.storage'

@@ -6,7 +6,7 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 use Doctrine\DBAL\Connection;
 
-abstract class AbstractPageScraper extends Scraper
+class PageScraper extends Scraper
 {
     /**
      * @var Connection
@@ -14,7 +14,7 @@ abstract class AbstractPageScraper extends Scraper
     protected $connection;
 
     /**
-     * @var ProfileContentStorageInterface
+     * @var ProfileContentStorage
      */
     protected $contentStorage;
 
@@ -25,7 +25,7 @@ abstract class AbstractPageScraper extends Scraper
 
     public function __construct(
         Connection $connection,
-        ProfileContentStorageInterface $contentStorage,
+        ProfileContentStorage $contentStorage,
         PageProcessInterface $pageProcess
     ) {
         $this->connection = $connection;
@@ -67,11 +67,6 @@ abstract class AbstractPageScraper extends Scraper
 
     protected function createCache()
     {
-        $this->connection->exec("
-            CREATE TABLE IF NOT EXISTS `skill_site_page_cache` (
-                `path` VARCHAR(255) PRIMARY KEY,
-                `value` MEDIUMBLOB
-            );
-        ");
+        $this->contentStorage->create();
     }
 }
