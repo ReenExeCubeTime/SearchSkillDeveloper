@@ -2,14 +2,11 @@
 
 namespace AppBundle\Command\SkillSlte;
 
-use AppBundle\Command\Core\QueueComand;
+use AppBundle\Command\Core\QueueCommand;
 
-class AnalyzeStructureCommand extends QueueComand
+class AnalyzeStructureCommand extends QueueCommand
 {
-    protected function configure()
-    {
-        $this->setName('skill:site:analyze:structure');
-    }
+    protected $name = 'skill:site:analyze:structure';
 
     protected function getService()
     {

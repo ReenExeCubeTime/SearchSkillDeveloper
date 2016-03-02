@@ -3,14 +3,22 @@
 namespace AppBundle\Command\Core;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-abstract class QueueComand extends ContainerAwareCommand
+abstract class QueueCommand extends ContainerAwareCommand
 {
     protected $defaultLimit = 100;
+
+    protected $name;
+
+    protected function configure()
+    {
+        $this
+            ->setName($this->name)
+            ->addOption('limit', 'l', InputOption::VALUE_OPTIONAL, 'limit', $this->defaultLimit);
+    }
     /**
      * @return \AppBundle\Service\AbstractQueueService
      */
@@ -20,7 +28,7 @@ abstract class QueueComand extends ContainerAwareCommand
     {
         $startTime = microtime(true);
 
-        $exitCode = $this->getService()->execute($this->defaultLimit);
+        $exitCode = $this->getService()->execute((int)$input->getOption('limit'));
 
         $duration = microtime(true) - $startTime;
         $memory = memory_get_usage(true);
