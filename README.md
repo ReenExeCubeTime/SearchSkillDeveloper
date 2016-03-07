@@ -1,6 +1,8 @@
 # SearchSkillDeveloper
 Analyze profiles and find best match for project
 
+[![Build Status](https://travis-ci.org/ReenExeCubeTime/SearchSkillDeveloper.svg)](https://travis-ci.org/ReenExeCubeTime/SearchSkillDeveloper)
+
 ##### Add jQuery
 ```javascript
     (function() {
