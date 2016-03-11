@@ -14,3 +14,5 @@ Analyze profiles and find best match for project
         s.parentNode.insertBefore(po, s);
     })();
 ```
+
+### [How to Define Commands as Services] (http://symfony.com/doc/master/cookbook/console/commands_as_services.html)

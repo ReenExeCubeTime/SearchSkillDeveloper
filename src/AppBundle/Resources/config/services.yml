@@ -88,3 +88,35 @@ services:
         arguments:
             - '@pw.profile.content.storage'
             - '@pw.page_path_process'
+
+    d.scrap.skill.site.list:
+        class: AppBundle\Command\Core\RunTimeQueueCommand
+        arguments:
+            - 'd:scrap:skill:site:list'
+            - '@pd.scrap_list_service'
+        tags:
+            -  { name: console.command }
+
+    d.scrap.skill.site.page:
+        class: AppBundle\Command\Core\RunTimeQueueCommand
+        arguments:
+            - 'd:scrap:skill:site:page'
+            - '@pd.scrap_page_service'
+        tags:
+            -  { name: console.command }
+
+    w.scrap.skill.site.list:
+        class: AppBundle\Command\Core\RunTimeQueueCommand
+        arguments:
+            - 'w:scrap:skill:site:list'
+            - '@pw.scrap_list_service'
+        tags:
+            -  { name: console.command }
+
+    w.scrap.skill.site.page:
+        class: AppBundle\Command\Core\RunTimeQueueCommand
+        arguments:
+            - 'w:scrap:skill:site:page'
+            - '@pw.scrap_page_service'
+        tags:
+            -  { name: console.command }
