@@ -21,4 +21,9 @@ class AbstractTableStorage
         $this->connection = $connection;
         $this->table = $table;
     }
+
+    public function getTable()
+    {
+        return $this->table;
+    }
 }

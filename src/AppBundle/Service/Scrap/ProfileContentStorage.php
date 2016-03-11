@@ -18,4 +18,17 @@ class ProfileContentStorage extends AbstractTableStorage
     {
         $this->connection->insert($this->table, compact('path', 'value'));
     }
+
+    public function get($path)
+    {
+        return $this
+            ->connection
+            ->fetchColumn("
+                SELECT `value`
+                FROM `$this->table`
+                WHERE `path` = :path
+            ",
+                compact('path')
+            );
+    }
 }

@@ -12,6 +12,6 @@ class CreateSkillSiteStructureCommand extends QueueCommand
 
     protected function getService()
     {
-        return $this->getContainer()->get('skill.structure_service');
+        return $this->getContainer()->get('pd.skill.structure_service');
     }
 }

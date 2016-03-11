@@ -5,10 +5,6 @@ services:
         arguments:
             - '@doctrine.dbal.default_connection'
 
-    skill.structure_service:
-        parent: conection_service
-        class: AppBundle\Service\SkillSite\StructureService
-
     skill.analyze_structure_service:
         parent: conection_service
         class: AppBundle\Service\SkillSite\AnalyzeStructureService
@@ -50,6 +46,12 @@ services:
         arguments:
             - '@pd.profile.content.storage'
             - '@pd.page_path_process'
+
+    pd.skill.structure_service:
+        class: AppBundle\Service\SkillSite\StructureService
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '@pd.profile.content.storage'
 
     pw.page_path_process:
         class: AppBundle\Service\Scrap\PagePathProcess
