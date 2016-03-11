@@ -7,25 +7,13 @@ use AppBundle\Service\AbstractQueueService;
 class RunTimeQueueCommand extends QueueCommand
 {
     /**
-     * @var AbstractQueueService
-     */
-    private $service;
-
-    /**
-     * RunTimeQueueCommand constructor.
+     * @param string $name
      * @param AbstractQueueService $service
      */
-    public function __construct(AbstractQueueService $service)
+    public function __construct($name, AbstractQueueService $service)
     {
+        $this->name = $name;
         $this->service = $service;
         parent::__construct();
-    }
-
-    /**
-     * @return AbstractQueueService
-     */
-    protected function getService()
-    {
-        return $this->service;
     }
 }
