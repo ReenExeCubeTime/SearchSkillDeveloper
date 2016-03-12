@@ -3,10 +3,28 @@
 namespace AppBundle\Service\SkillSite;
 
 use AppBundle\Service\AbstractQueueService;
+use AppBundle\Service\Scrap\ProfileContentStorage;
 use Symfony\Component\DomCrawler\Crawler;
+use Doctrine\DBAL\Connection;
 
 class StructureService extends AbstractQueueService
 {
+    /**
+     * @var Connection
+     */
+    protected $connection;
+
+    /**
+     * @var ProfileContentStorage
+     */
+    private $contentStorage;
+
+    public function __construct(Connection $connection, ProfileContentStorage $contentStorage)
+    {
+        $this->connection = $connection;
+        $this->contentStorage = $contentStorage;
+    }
+
     public function clear()
     {
         $this->connection->exec('
@@ -24,7 +42,7 @@ class StructureService extends AbstractQueueService
         }
 
         foreach ($pages as $path) {
-            $html = $this->getCachedPage($path);
+            $html = $this->contentStorage->get($path);
 
             try {
                 $data = $this->getPageData($html);
@@ -104,16 +122,6 @@ class StructureService extends AbstractQueueService
         return $stmt->fetchAll(\PDO::FETCH_COLUMN);
     }
 
-    private function getCachedPage($path)
-    {
-        return $this->connection
-            ->fetchColumn("
-                SELECT `value` FROM `skill_site_page_cache`
-                WHERE `path` = :path
-            " ,compact('path'));
-
-    }
-
     private function updateProcess($path)
     {
         return $this->connection
@@ -143,7 +151,7 @@ class StructureService extends AbstractQueueService
                 `process` TINYINT DEFAULT 0
             )
               AS
-            SELECT `path` FROM `skill_site_page_queue`;
+            SELECT `path` FROM `{$this->contentStorage->getTable()}`;
         ");
 
         $this->connection->exec("
