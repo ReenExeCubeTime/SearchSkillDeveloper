@@ -6,12 +6,6 @@ parameters:
         base_uri: 'http://www.work.ua/'
 
 services:
-    conection_service:
-        abstract:  true
-        class: AppBundle\Service\ConnectionService
-        arguments:
-            - '@doctrine.dbal.default_connection'
-
     skill.analyze_structure_service:
         parent: conection_service
         class: AppBundle\Service\SkillSite\AnalyzeStructureService
