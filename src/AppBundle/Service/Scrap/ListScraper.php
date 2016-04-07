@@ -2,10 +2,11 @@
 
 namespace AppBundle\Service\Scrap;
 
+use AppBundle\Service\AbstractQueueService;
 use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
 
-class ListScraper extends Scraper
+class ListScraper extends AbstractQueueService
 {
     /**
      * @var ProfileListContentStorageInterface
@@ -22,6 +23,11 @@ class ListScraper extends Scraper
      */
     private $pagePathQueue;
 
+    /**
+     * @var Client
+     */
+    private $client;
+
     public function __construct(
         ProfileListContentStorageInterface $profileListStorage,
         ListContentAnalyzerInterface $contentAnalyzer,
@@ -36,8 +42,6 @@ class ListScraper extends Scraper
 
     protected function process($limit)
     {
-        $client = $this->getClient();
-
         if ($last = $this->profileListStorage->getLast()) {
             $nextListPath = $this->contentAnalyzer->getNextPage(new Crawler($last));
 
@@ -51,7 +55,7 @@ class ListScraper extends Scraper
 
         do {
             try {
-                $html =  $client->get($nextListPath)->getBody()->getContents();
+                $html =  $this->client->get($nextListPath)->getBody()->getContents();
             } catch (\GuzzleHttp\Exception\ClientException $e) {
                 return self::END;
             }

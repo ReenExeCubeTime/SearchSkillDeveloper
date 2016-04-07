@@ -32,7 +32,8 @@ class PagePathProcess extends AbstractTableStorage implements PagePathQueueInter
     {
         return $this->connection
             ->executeQuery("
-                SELECT `path` FROM `$this->table`
+                SELECT `path`
+                FROM `$this->table`
                 WHERE `process` = 0
                 LIMIT $limit;
             ")
