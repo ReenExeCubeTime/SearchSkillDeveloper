@@ -16,17 +16,15 @@ class PagePathProcess extends AbstractTableStorage implements PagePathQueueInter
 
     public function push(array $list)
     {
-        $this->connection->beginTransaction();
-
         $statement = $this->connection->prepare("
             INSERT INTO `$this->table`(`path`)
             VALUES (:path)
         ");
 
+        $this->connection->beginTransaction();
         foreach ($list as $path) {
             $statement->execute(compact('path'));
         }
-
         $this->connection->commit();
     }
 
