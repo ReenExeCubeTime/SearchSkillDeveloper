@@ -4,8 +4,6 @@ namespace AppBundle\Service;
 
 abstract class AbstractQueueService
 {
-    const END = 1;
-
     /**
      * @param $limit
      * @return mixed

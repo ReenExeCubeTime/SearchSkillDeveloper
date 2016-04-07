@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service\Scrap;
 
+use AppBundle\Core\QueueState;
 use AppBundle\Service\AbstractQueueService;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
@@ -39,7 +40,7 @@ class PageScraper extends AbstractQueueService
         $pages = $this->pageProcess->getNextList($limit);
 
         if (empty($pages)) {
-            return self::END;
+            return QueueState::END;
         }
 
         /* @var $promises PromiseInterface[] */

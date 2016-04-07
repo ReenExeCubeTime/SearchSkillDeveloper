@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service\Scrap;
 
+use AppBundle\Core\QueueState;
 use AppBundle\Service\AbstractQueueService;
 use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
@@ -46,7 +47,7 @@ class ListScraper extends AbstractQueueService
             $nextListPath = $this->contentAnalyzer->getNextPage(new Crawler($last));
 
             if (empty($nextListPath)) {
-                return self::END;
+                return QueueState::END;
             }
 
         } else {
@@ -57,7 +58,7 @@ class ListScraper extends AbstractQueueService
             try {
                 $html =  $this->client->get($nextListPath)->getBody()->getContents();
             } catch (\GuzzleHttp\Exception\ClientException $e) {
-                return self::END;
+                return QueueState::END;
             }
 
             $this->profileListStorage->save($nextListPath, $html);
