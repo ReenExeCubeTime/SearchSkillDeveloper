@@ -6,13 +6,17 @@ use AppBundle\Service\AbstractQueueService;
 
 abstract class Scraper extends AbstractQueueService
 {
+
+    /**
+     * @var
+     */
+    protected $client;
+
     /**
      * @return \GuzzleHttp\Client
      */
     protected function getClient()
     {
-        return new \GuzzleHttp\Client([
-            'base_uri'      => 'http://www.work.ua/'
-        ]);
+        return $this->client;
     }
 }

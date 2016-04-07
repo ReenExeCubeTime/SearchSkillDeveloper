@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service\Scrap;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -19,10 +20,12 @@ class PageScraper extends Scraper
 
     public function __construct(
         ProfileContentStorage $contentStorage,
-        PageProcessInterface $pageProcess
+        PageProcessInterface $pageProcess,
+        Client $client
     ) {
         $this->contentStorage = $contentStorage;
         $this->pageProcess = $pageProcess;
+        $this->client = $client;
     }
 
     protected function process($limit)

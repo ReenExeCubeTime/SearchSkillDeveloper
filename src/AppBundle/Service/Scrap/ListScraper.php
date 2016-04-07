@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service\Scrap;
 
+use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ListScraper extends Scraper
@@ -24,11 +25,13 @@ class ListScraper extends Scraper
     public function __construct(
         ProfileListContentStorageInterface $profileListStorage,
         ListContentAnalyzerInterface $contentAnalyzer,
-        PagePathQueueInterface $pagePathQueue
+        PagePathQueueInterface $pagePathQueue,
+        Client $client
     ) {
         $this->profileListStorage = $profileListStorage;
         $this->contentAnalyzer = $contentAnalyzer;
         $this->pagePathQueue = $pagePathQueue;
+        $this->client = $client;
     }
 
     protected function process($limit)
