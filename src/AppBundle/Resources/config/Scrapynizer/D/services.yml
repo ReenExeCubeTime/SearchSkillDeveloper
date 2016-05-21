@@ -6,6 +6,9 @@ services:
 
     pd.sequence.repository:
         class: 'AppBundle\Service\Scrapynizer\D\ListContentRepository'
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - 'pd_sequence'
 
     pd.sequence.pager:
         class: 'ReenExe\Scrapynizer\Pager\PaginationHunter'
@@ -26,6 +29,8 @@ services:
 
     pd.sequence.scrap.command.service:
         class: 'AppBundle\Service\Scrapynizer\QueueCommandService'
+        arguments:
+            - '@pd.sequence.scraper'
 
     pd.sequence.scrap.command:
         class: 'AppBundle\Command\Core\RunTimeQueueCommand'
