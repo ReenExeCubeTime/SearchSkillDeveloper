@@ -2,7 +2,9 @@
 
 namespace AppBundle\Service;
 
-abstract class AbstractQueueService
+use AppBundle\Service\Scrapynizer\QueueCommandServiceInterface;
+
+abstract class AbstractQueueService implements QueueCommandServiceInterface
 {
     /**
      * @param $limit

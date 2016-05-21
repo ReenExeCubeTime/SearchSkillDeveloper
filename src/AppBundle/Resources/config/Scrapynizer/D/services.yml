@@ -1,0 +1,60 @@
+services:
+    pd.scrap.client:
+        class: 'GuzzleHttp\Client'
+        arguments:
+            - { base_uri: 'https://djinni.co/' }
+
+    pd.sequence.repository:
+        class: 'AppBundle\Service\Scrapynizer\D\ListContentRepository'
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - 'pd_sequence'
+
+    pd.sequence.pager:
+        class: 'ReenExe\Scrapynizer\Pager\PaginationHunter'
+        arguments:
+            - '/developers/'
+            - '.next a'
+
+    pd.sequence.link.collection.finder:
+        class: 'AppBundle\Service\Scrapynizer\LinkCollectionSelectorFinder'
+        arguments:
+            - '.profile'
+
+    pd.path.process.repository:
+        class: 'AppBundle\Service\Scrapynizer\PathProcessRepository'
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - 'pd_profile_page_link'
+
+    pd.link.collection.analyzer:
+        class: 'AppBundle\Service\Scrapynizer\LinkCollectionAnalyzer'
+        arguments:
+            - '@pd.sequence.link.collection.finder'
+            - '@pd.path.process.repository'
+
+    pd.sequence.analyzer:
+        class: 'AppBundle\Service\Scrapynizer\D\SequenceContentAnalyzer'
+        arguments:
+            - '@pd.link.collection.analyzer'
+
+    pd.sequence.scraper:
+        class: 'ReenExe\Scrapynizer\Scraper\SequenceScraper'
+        arguments:
+            - '@pd.scrap.client'
+            - '@pd.sequence.repository'
+            - '@pd.sequence.pager'
+            - '@pd.sequence.analyzer'
+
+    pd.sequence.scrap.command.adapter:
+        class: 'AppBundle\Service\Scrapynizer\QueueCommandAdapter'
+        arguments:
+            - '@pd.sequence.scraper'
+
+    pd.sequence.scrap.command:
+        class: 'AppBundle\Command\Core\RunTimeQueueCommand'
+        arguments:
+            - 'w:sequence:scrap'
+            - '@pd.sequence.scrap.command.adapter'
+        tags:
+            -  { name: 'console.command' }

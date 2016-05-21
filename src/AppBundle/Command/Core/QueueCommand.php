@@ -2,7 +2,7 @@
 
 namespace AppBundle\Command\Core;
 
-use AppBundle\Service\AbstractQueueService;
+use AppBundle\Service\Scrapynizer\QueueCommandServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,7 +21,7 @@ abstract class QueueCommand extends ContainerAwareCommand
     protected $name;
 
     /**
-     * @var AbstractQueueService
+     * @var QueueCommandServiceInterface
      */
     protected $service;
 
@@ -32,7 +32,7 @@ abstract class QueueCommand extends ContainerAwareCommand
             ->addOption('limit', 'l', InputOption::VALUE_OPTIONAL, 'limit', $this->defaultLimit);
     }
     /**
-     * @return AbstractQueueService
+     * @return QueueCommandServiceInterface
      */
     protected function getService()
     {

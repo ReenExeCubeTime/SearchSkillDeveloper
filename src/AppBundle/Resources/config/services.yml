@@ -1,3 +1,6 @@
+imports:
+    - { resource: "@AppBundle/Resources/config/Scrapynizer/D/services.yml" }
+
 parameters:
     pd.client:
         base_uri: 'http://djinni.co/'
