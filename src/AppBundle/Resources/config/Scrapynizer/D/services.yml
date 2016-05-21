@@ -20,3 +20,11 @@ services:
             - '@pd.sequence.repository'
             - '@pd.sequence.pager'
             - '@pd.sequence.analyzer'
+
+    pd.sequence.scrap.command:
+        class: AppBundle\Command\Core\RunTimeQueueCommand
+        arguments:
+            - 'w:scrap:skill:site:page'
+            - '@pw.scrap_page_service'
+        tags:
+            -  { name: console.command }
