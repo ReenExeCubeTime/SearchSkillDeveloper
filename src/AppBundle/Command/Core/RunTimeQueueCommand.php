@@ -2,14 +2,13 @@
 
 namespace AppBundle\Command\Core;
 
-use AppBundle\Service\AbstractQueueService;
 use AppBundle\Service\Scrapynizer\QueueCommandServiceInterface;
 
 class RunTimeQueueCommand extends QueueCommand
 {
     /**
      * @param string $name
-     * @param AbstractQueueService $service
+     * @param QueueCommandServiceInterface $service
      */
     public function __construct($name, QueueCommandServiceInterface $service)
     {
