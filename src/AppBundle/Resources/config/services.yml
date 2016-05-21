@@ -1,3 +1,6 @@
+imports:
+    - { resource: "@AppBundle/Resources/config/Scrapynizer/D/services.yml" }
+
 services:
     conection_service:
         abstract:  true

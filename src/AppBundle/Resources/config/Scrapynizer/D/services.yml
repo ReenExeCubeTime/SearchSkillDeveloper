@@ -1,0 +1,22 @@
+services:
+    pd.scrap.client:
+        class: 'GuzzleHttp\Client'
+        arguments:
+            - { base_uri: 'https://djinni.co/' }
+
+    pd.sequence.repository:
+        class: 'AppBundle\Service\Scrapynizer\D\ListContentRepository'
+
+    pd.sequence.pager:
+        class: 'AppBundle\Service\Scrapynizer\D\PaginationHunter'
+
+    pd.sequence.analyzer:
+        class: 'AppBundle\Service\Scrapynizer\D\ListContentAnalyzer'
+
+    pd.sequence.scraper:
+        class: 'ReenExe\Scrapynizer\Scraper\SequenceScraper'
+        arguments:
+            - '@pd.scrap.client'
+            - '@pd.sequence.repository'
+            - '@pd.sequence.pager'
+            - '@pd.sequence.analyzer'
