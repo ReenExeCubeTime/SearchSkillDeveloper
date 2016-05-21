@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service\SkillSite;
 
+use AppBundle\Core\QueueState;
 use AppBundle\Service\AbstractQueueService;
 use AppBundle\Service\Scrap\ProfileContentStorage;
 use Symfony\Component\DomCrawler\Crawler;
@@ -38,7 +39,7 @@ class StructureService extends AbstractQueueService
         $pages = $this->getPages($limit);
 
         if (empty($pages)) {
-            return self::END;
+            return QueueState::END;
         }
 
         foreach ($pages as $path) {

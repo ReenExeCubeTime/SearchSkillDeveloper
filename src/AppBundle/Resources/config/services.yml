@@ -1,16 +1,27 @@
 imports:
     - { resource: "@AppBundle/Resources/config/Scrapynizer/D/services.yml" }
 
-services:
-    conection_service:
-        abstract:  true
-        class: AppBundle\Service\ConnectionService
-        arguments:
-            - '@doctrine.dbal.default_connection'
+parameters:
+    pd.client:
+        base_uri: 'http://djinni.co/'
 
+    pw.client:
+        base_uri: 'http://www.work.ua/'
+
+services:
     skill.analyze_structure_service:
         parent: conection_service
         class: AppBundle\Service\SkillSite\AnalyzeStructureService
+
+    pd.client:
+        class: GuzzleHttp\Client
+        arguments:
+            - '%pd.client%'
+
+    pw.client:
+        class: GuzzleHttp\Client
+        arguments:
+            - '%pw.client%'
 
     pd.profile.list.content.storage:
         class: AppBundle\Service\Scrap\ProfileListContentStorage
@@ -43,12 +54,14 @@ services:
             - '@pd.profile.list.content.storage'
             - '@pd.list.content.analyzer'
             - '@pd.page_path_process'
+            - '@pd.client'
 
     pd.scrap_page_service:
         class: AppBundle\Service\Scrap\PageScraper
         arguments:
             - '@pd.profile.content.storage'
             - '@pd.page_path_process'
+            - '@pd.client'
 
     pd.skill.structure_service:
         class: AppBundle\Service\SkillSite\StructureService
@@ -87,12 +100,14 @@ services:
             - '@pw.profile.list.content.storage'
             - '@pw.list.content.analyzer'
             - '@pw.page_path_process'
+            - '@pw.client'
 
     pw.scrap_page_service:
         class: AppBundle\Service\Scrap\PageScraper
         arguments:
             - '@pw.profile.content.storage'
             - '@pw.page_path_process'
+            - '@pw.client'
 
     d.scrap.skill.site.list:
         class: AppBundle\Command\Core\RunTimeQueueCommand

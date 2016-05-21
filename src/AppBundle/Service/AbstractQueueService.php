@@ -6,8 +6,6 @@ use AppBundle\Service\Scrapynizer\QueueCommandServiceInterface;
 
 abstract class AbstractQueueService implements QueueCommandServiceInterface
 {
-    const END = 1;
-
     /**
      * @param $limit
      * @return mixed

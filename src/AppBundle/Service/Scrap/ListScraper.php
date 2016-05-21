@@ -2,9 +2,12 @@
 
 namespace AppBundle\Service\Scrap;
 
+use AppBundle\Core\QueueState;
+use AppBundle\Service\AbstractQueueService;
+use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
 
-class ListScraper extends Scraper
+class ListScraper extends AbstractQueueService
 {
     /**
      * @var ProfileListContentStorageInterface
@@ -21,25 +24,30 @@ class ListScraper extends Scraper
      */
     private $pagePathQueue;
 
+    /**
+     * @var Client
+     */
+    private $client;
+
     public function __construct(
         ProfileListContentStorageInterface $profileListStorage,
         ListContentAnalyzerInterface $contentAnalyzer,
-        PagePathQueueInterface $pagePathQueue
+        PagePathQueueInterface $pagePathQueue,
+        Client $client
     ) {
         $this->profileListStorage = $profileListStorage;
         $this->contentAnalyzer = $contentAnalyzer;
         $this->pagePathQueue = $pagePathQueue;
+        $this->client = $client;
     }
 
     protected function process($limit)
     {
-        $client = $this->getClient();
-
         if ($last = $this->profileListStorage->getLast()) {
             $nextListPath = $this->contentAnalyzer->getNextPage(new Crawler($last));
 
             if (empty($nextListPath)) {
-                return self::END;
+                return QueueState::END;
             }
 
         } else {
@@ -48,9 +56,9 @@ class ListScraper extends Scraper
 
         do {
             try {
-                $html =  $client->get($nextListPath)->getBody()->getContents();
+                $html =  $this->client->get($nextListPath)->getBody()->getContents();
             } catch (\GuzzleHttp\Exception\ClientException $e) {
-                return self::END;
+                return QueueState::END;
             }
 
             $this->profileListStorage->save($nextListPath, $html);

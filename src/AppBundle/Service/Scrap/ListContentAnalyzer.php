@@ -9,17 +9,17 @@ class ListContentAnalyzer implements ListContentAnalyzerInterface
     /**
      * @var string
      */
-    protected $firstPage;
+    private $firstPage;
 
     /**
      * @var string
      */
-    protected $nextPageSelector;
+    private $nextPageSelector;
 
     /**
      * @var string
      */
-    protected $profileLinkSelector;
+    private $profileLinkSelector;
 
     /**
      * ListContentAnalyzer constructor.

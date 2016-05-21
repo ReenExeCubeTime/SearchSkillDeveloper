@@ -2,10 +2,13 @@
 
 namespace AppBundle\Service\Scrap;
 
+use AppBundle\Core\QueueState;
+use AppBundle\Service\AbstractQueueService;
+use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class PageScraper extends Scraper
+class PageScraper extends AbstractQueueService
 {
     /**
      * @var ProfileContentStorage
@@ -17,12 +20,19 @@ class PageScraper extends Scraper
      */
     private $pageProcess;
 
+    /**
+     * @var Client
+     */
+    private $client;
+
     public function __construct(
         ProfileContentStorage $contentStorage,
-        PageProcessInterface $pageProcess
+        PageProcessInterface $pageProcess,
+        Client $client
     ) {
         $this->contentStorage = $contentStorage;
         $this->pageProcess = $pageProcess;
+        $this->client = $client;
     }
 
     protected function process($limit)
@@ -30,14 +40,14 @@ class PageScraper extends Scraper
         $pages = $this->pageProcess->getNextList($limit);
 
         if (empty($pages)) {
-            return self::END;
+            return QueueState::END;
         }
 
         /* @var $promises PromiseInterface[] */
         $promises = [];
-        $client = $this->getClient();
+
         foreach ($pages as $path) {
-            $promises[] = $client
+            $promises[] = $this->client
                 ->getAsync($path)
                 ->then(function (ResponseInterface $response) use ($path) {
                     $html = $response->getBody()->getContents();
