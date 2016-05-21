@@ -28,9 +28,9 @@ services:
         class: 'AppBundle\Service\Scrapynizer\QueueCommandService'
 
     pd.sequence.scrap.command:
-        class: AppBundle\Command\Core\RunTimeQueueCommand
+        class: 'AppBundle\Command\Core\RunTimeQueueCommand'
         arguments:
             - 'w:sequence:scrap'
             - '@pd.sequence.scrap.command.service'
         tags:
-            -  { name: console.command }
+            -  { name: 'console.command' }
