@@ -4,7 +4,7 @@ namespace AppBundle\Service\Scrapynizer;
 
 use ReenExe\Scrapynizer\Scraper\ListScraperInterface;
 
-class QueueCommandService implements QueueCommandServiceInterface
+class QueueCommandAdapter implements QueueCommandServiceInterface
 {
     /**
      * @var ListScraperInterface
