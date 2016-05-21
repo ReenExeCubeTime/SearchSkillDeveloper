@@ -8,7 +8,10 @@ services:
         class: 'AppBundle\Service\Scrapynizer\D\ListContentRepository'
 
     pd.sequence.pager:
-        class: 'AppBundle\Service\Scrapynizer\D\PaginationHunter'
+        class: 'ReenExe\Scrapynizer\Pager\PaginationHunter'
+        arguments:
+            - '/developers/'
+            - '.next a'
 
     pd.sequence.analyzer:
         class: 'AppBundle\Service\Scrapynizer\D\ListContentAnalyzer'
