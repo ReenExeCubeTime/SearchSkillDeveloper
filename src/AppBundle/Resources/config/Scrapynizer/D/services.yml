@@ -78,6 +78,6 @@ services:
         class: 'AppBundle\Command\Core\RunTimeQueueCommand'
         arguments:
             - 'd:scrap:target'
-            - '@pd.sequence.scrap.command.adapter'
+            - '@pd.scrap.target.command.adapter'
         tags:
             -  { name: 'console.command' }

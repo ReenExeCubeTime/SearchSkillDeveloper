@@ -3,8 +3,9 @@
 namespace AppBundle\Service\Scrapynizer;
 
 use Doctrine\DBAL\Connection;
+use ReenExe\Scrapynizer\Repository\PathCollectionRepositoryInterface;
 
-class PathProcessRepository implements QueueRepositoryInterface
+class PathProcessRepository implements QueueRepositoryInterface, PathCollectionRepositoryInterface
 {
     /**
      * @var Connection
@@ -40,7 +41,7 @@ class PathProcessRepository implements QueueRepositoryInterface
         $this->connection->commit();
     }
 
-    public function getNextList($limit)
+    public function getNext($limit)
     {
         return $this->connection
             ->executeQuery("
