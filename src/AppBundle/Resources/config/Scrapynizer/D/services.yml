@@ -46,15 +46,38 @@ services:
             - '@pd.sequence.pager'
             - '@pd.sequence.analyzer'
 
+    pd.content.analyzer:
+        class: 'AppBundle\Service\Scrapynizer\D\ContentAnalyzer'
+
+    pd.target.scrap:
+        class: 'ReenExe\Scrapynizer\Scraper\CollectionScraper'
+        arguments:
+            - '@pd.scrap.client'
+            - '@pd.path.process.repository'
+            - '@pd.content.analyzer'
+
     pd.sequence.scrap.command.adapter:
         class: 'AppBundle\Service\Scrapynizer\QueueCommandAdapter'
         arguments:
             - '@pd.sequence.scraper'
 
-    pd.sequence.scrap.command:
+    pd.sequence.scrap.target.list.command:
         class: 'AppBundle\Command\Core\RunTimeQueueCommand'
         arguments:
-            - 'd:sequence:scrap'
+            - 'd:sequence:scrap:target:list'
+            - '@pd.sequence.scrap.command.adapter'
+        tags:
+            -  { name: 'console.command' }
+
+    pd.scrap.target.command.adapter:
+        class: 'AppBundle\Service\Scrapynizer\QueueCommandAdapter'
+        arguments:
+            - '@pd.target.scrap'
+
+    pd.scrap.target.command:
+        class: 'AppBundle\Command\Core\RunTimeQueueCommand'
+        arguments:
+            - 'd:scrap:target'
             - '@pd.sequence.scrap.command.adapter'
         tags:
             -  { name: 'console.command' }
