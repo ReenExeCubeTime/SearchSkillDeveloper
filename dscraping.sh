@@ -3,9 +3,8 @@
 startTime=`date +%s`
 
 STEPS=(
-    "d:scrap:skill:site:list"
-    "d:scrap:skill:site:page"
-    "d:create:skill:site:structure"
+    "d:sequence:scrap:target:list --limit=1"
+    "d:scrap:target"
 )
 
 for STEP in "${STEPS[@]}"
@@ -21,8 +20,6 @@ do
         echo '...';
     done
 done
-
-bin/console skill:site:analyze:structure
 
 endTime=`date +%s`
 echo execution time was `expr $endTime - $startTime` s.
