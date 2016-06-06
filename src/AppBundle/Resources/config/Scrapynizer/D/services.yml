@@ -54,7 +54,7 @@ services:
     pd.sequence.scrap.command:
         class: 'AppBundle\Command\Core\RunTimeQueueCommand'
         arguments:
-            - 'w:sequence:scrap'
+            - 'd:sequence:scrap'
             - '@pd.sequence.scrap.command.adapter'
         tags:
             -  { name: 'console.command' }
