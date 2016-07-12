@@ -2,9 +2,6 @@
 
 namespace AppBundle\Service\Scrap;
 
-use AppBundle\Service\Scrap\AbstractTableStorage;
-use AppBundle\Service\Scrap\ProfileListContentStorageInterface;
-
 class ProfileListContentStorage extends AbstractTableStorage implements ProfileListContentStorageInterface
 {
     public function create()

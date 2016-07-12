@@ -17,6 +17,7 @@ interface ProfileListContentStorageInterface
     /**
      * @param $path
      * @param $value
+     *
      * @return mixed
      */
     public function save($path, $value);

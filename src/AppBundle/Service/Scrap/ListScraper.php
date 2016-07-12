@@ -49,14 +49,13 @@ class ListScraper extends AbstractQueueService
             if (empty($nextListPath)) {
                 return QueueState::END;
             }
-
         } else {
             $nextListPath = $this->contentAnalyzer->getFirstPage();
         }
 
         do {
             try {
-                $html =  $this->client->get($nextListPath)->getBody()->getContents();
+                $html = $this->client->get($nextListPath)->getBody()->getContents();
             } catch (\GuzzleHttp\Exception\ClientException $e) {
                 return QueueState::END;
             }

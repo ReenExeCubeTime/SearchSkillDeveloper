@@ -23,6 +23,7 @@ class ListContentAnalyzer implements ListContentAnalyzerInterface
 
     /**
      * ListContentAnalyzer constructor.
+     *
      * @param $firstPage
      * @param $nextPageSelector
      * @param $profileLinkSelector

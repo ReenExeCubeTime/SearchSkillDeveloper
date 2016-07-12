@@ -47,25 +47,25 @@ class AnalyzeStructureService extends AbstractQueueService
 
     private function createTableStructure()
     {
-        $this->connection->exec("DROP TABLE IF EXISTS `skills`;");
-        $this->connection->exec("DROP TABLE IF EXISTS `developer_to_skill`;");
+        $this->connection->exec('DROP TABLE IF EXISTS `skills`;');
+        $this->connection->exec('DROP TABLE IF EXISTS `developer_to_skill`;');
 
-        $this->connection->exec("
+        $this->connection->exec('
             CREATE TABLE IF NOT EXISTS `skills`(
                 `id` INT(11) PRIMARY KEY,
                 `name` VARCHAR(255),
                 UNIQUE KEY (`name`)
             ) DEFAULT CHARACTER SET=`utf8` COLLATE=`utf8_bin`;
-        ");
+        ');
 
-        $this->connection->exec("
+        $this->connection->exec('
             CREATE TABLE IF NOT EXISTS `developer_to_skill`(
                 `id` INT PRIMARY KEY AUTO_INCREMENT,
                 `developer_id` INT(11),
                 `skill_id` INT(11),
                 `score` TINYINT
             );
-        ");
+        ');
     }
 
     private function addSkillClasifier(array $list)
@@ -73,13 +73,12 @@ class AnalyzeStructureService extends AbstractQueueService
         $result = array_combine(range(1, count($list)), $list);
 
         foreach ($result as $id => $name) {
-
             $this->connection
                 ->insert(
                     'skills',
                     [
                         'id' => $id,
-                        'name' => $name
+                        'name' => $name,
                     ]
                 );
         }
