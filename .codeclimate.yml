@@ -1,0 +1,13 @@
+engines:
+    duplication:
+        enabled: true
+        config:
+            languages:
+                - php
+
+exclude_paths:
+    - app/*
+    - tests/*
+    - web/*
+    - bin/*
+    - var/*
