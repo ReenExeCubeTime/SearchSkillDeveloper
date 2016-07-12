@@ -2,6 +2,8 @@
 Analyze profiles and find best match for project
 
 [![Build Status](https://travis-ci.org/ReenExeCubeTime/SearchSkillDeveloper.svg)](https://travis-ci.org/ReenExeCubeTime/SearchSkillDeveloper)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Scrapynizer/SearchSkillDeveloper/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Scrapynizer/SearchSkillDeveloper/?branch=master)
+[![Code Climate](https://codeclimate.com/github/Scrapynizer/SearchSkillDeveloper/badges/gpa.svg)](https://codeclimate.com/github/Scrapynizer/SearchSkillDeveloper)
 
 ##### Add jQuery
 ```javascript

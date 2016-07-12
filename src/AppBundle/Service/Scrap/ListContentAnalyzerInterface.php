@@ -13,12 +13,14 @@ interface ListContentAnalyzerInterface
 
     /**
      * @param Crawler $crawler
+     *
      * @return string|false
      */
     public function getNextPage(Crawler $crawler);
 
     /**
      * @param Crawler $crawler
+     *
      * @return array
      */
     public function getPageLinkCollection(Crawler $crawler);

@@ -43,7 +43,7 @@ abstract class QueueCommand extends ContainerAwareCommand
     {
         $startTime = microtime(true);
 
-        $exitCode = $this->getService()->execute((int)$input->getOption('limit'));
+        $exitCode = $this->getService()->execute((int) $input->getOption('limit'));
 
         $duration = microtime(true) - $startTime;
         $memory = memory_get_usage(true);

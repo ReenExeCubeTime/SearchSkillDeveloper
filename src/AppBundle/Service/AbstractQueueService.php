@@ -8,11 +8,13 @@ abstract class AbstractQueueService implements QueueCommandServiceInterface
 {
     /**
      * @param $limit
+     *
      * @return mixed
      */
     public function execute($limit)
     {
         $this->createCache();
+
         return $this->process($limit);
     }
 

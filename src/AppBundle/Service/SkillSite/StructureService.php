@@ -89,11 +89,11 @@ class StructureService extends AbstractQueueService
                 trim($header->filter('.profile-details-salary')->text()),
                 1
             ),
-            'experience_year' => (int)$body->filter('.before-hint')->text(),
+            'experience_year' => (int) $body->filter('.before-hint')->text(),
             'experience_description' => $descriptions[0],
             'achievement' => $descriptions[1],
             'expect' => $descriptions[2],
-            'skills' => json_encode($this->getSkills($body))
+            'skills' => json_encode($this->getSkills($body)),
         ];
 
         return $data;
@@ -106,7 +106,7 @@ class StructureService extends AbstractQueueService
             ->each(function (Crawler $crawler) {
                 $name = trim($crawler->filter('td')->first()->text());
 
-                $score = (int)$crawler->filter('div.skill')->attr('data-score');
+                $score = (int) $crawler->filter('div.skill')->attr('data-score');
 
                 return compact('name', 'score');
             });
@@ -120,6 +120,7 @@ class StructureService extends AbstractQueueService
             LIMIT $limit;
         ");
         $stmt->execute();
+
         return $stmt->fetchAll(\PDO::FETCH_COLUMN);
     }
 
@@ -155,7 +156,7 @@ class StructureService extends AbstractQueueService
             SELECT `path` FROM `{$this->contentStorage->getTable()}`;
         ");
 
-        $this->connection->exec("
+        $this->connection->exec('
             CREATE TABLE IF NOT EXISTS `developer`(
                 `id` INT PRIMARY KEY AUTO_INCREMENT,
                 `path` VARCHAR(255),
@@ -169,6 +170,6 @@ class StructureService extends AbstractQueueService
                 `achievement` TEXT,
                 `expect` TEXT
             ) DEFAULT CHARACTER SET=utf8;
-        ");
+        ');
     }
 }
