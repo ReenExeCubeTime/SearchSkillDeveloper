@@ -1,36 +1,44 @@
+parameters:
+    uri: 'https://djinni.co/'
+    pager_sequence_table: 'pd_sequence'
+    profile_link_table: 'pd_profile_page_link'
+    pager_root_path: '/developers/'
+    pager_selector_next: '.next a'
+    profile_link_selector: '.profile'
+
 services:
     pd.scrap.client:
         public: false
         class: 'GuzzleHttp\Client'
         arguments:
-            - { base_uri: 'https://djinni.co/' }
+            - { base_uri: '%uri%' }
 
     pd.sequence.repository:
         public: false
         class: 'AppBundle\Service\Scrapynizer\D\ListContentRepository'
         arguments:
             - '@doctrine.dbal.default_connection'
-            - 'pd_sequence'
+            - '%pager_sequence_table%'
 
     pd.sequence.pager:
         public: false
         class: 'ReenExe\Scrapynizer\Pager\PaginationHunter'
         arguments:
-            - '/developers/'
-            - '.next a'
+            - '%pager_root_path%'
+            - '%pager_selector_next%'
 
     pd.sequence.link.collection.finder:
         public: false
         class: 'AppBundle\Service\Scrapynizer\LinkCollectionSelectorFinder'
         arguments:
-            - '.profile'
+            - '%profile_link_selector%'
 
     pd.path.process.repository:
         public: false
         class: 'AppBundle\Service\Scrapynizer\PathProcessRepository'
         arguments:
             - '@doctrine.dbal.default_connection'
-            - 'pd_profile_page_link'
+            - '%profile_link_table%'
 
     pd.link.collection.analyzer:
         public: false
