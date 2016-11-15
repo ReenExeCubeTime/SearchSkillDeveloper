@@ -9,6 +9,6 @@ class ContentAnalyzer implements ContentAnalyzerInterface
 {
     public function analyze($path, ContainerInterface $container)
     {
-        // TODO: Implement analyze() method.
+        throw new \Exception(__METHOD__);
     }
 }

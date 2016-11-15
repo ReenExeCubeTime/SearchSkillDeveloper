@@ -4,17 +4,15 @@ namespace ReenExe\Scrapynizer\Content;
 
 use Symfony\Component\DomCrawler\Crawler;
 
-class Container extends AbstractContainer
+class ProxyContainer extends AbstractContainer
 {
     /**
-     * Container constructor.
-     * @param string $string
-     * @param Crawler $crawler
+     * ProxyContainer constructor.
+     * @param $string
      */
-    public function __construct($string, Crawler $crawler)
+    public function __construct($string)
     {
         $this->string = $string;
-        $this->crawler = $crawler;
     }
 
     /**
@@ -22,6 +20,10 @@ class Container extends AbstractContainer
      */
     public function getCrawler()
     {
+        if ($this->crawler === null) {
+            $this->crawler = new Crawler($this->string);
+        }
+
         return $this->crawler;
     }
 }

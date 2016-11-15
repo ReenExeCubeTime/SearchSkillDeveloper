@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 use ReenExe\Scrapynizer\Analyzer\ContentAnalyzerInterface;
+use ReenExe\Scrapynizer\Content\ProxyContainer;
 use ReenExe\Scrapynizer\Repository\PathCollectionRepositoryInterface;
 
 class CollectionScraper extends AbstractScraper implements ListScraperInterface
@@ -51,7 +52,7 @@ class CollectionScraper extends AbstractScraper implements ListScraperInterface
                 ->getAsync($path)
                 ->then(function (ResponseInterface $response) use ($path) {
                     $html = $response->getBody()->getContents();
-                    $this->analyzer->analyze($path, $html);
+                    $this->analyzer->analyze($path, new ProxyContainer($html));
                     $this->repository->exclude($path);
                 });
         }
