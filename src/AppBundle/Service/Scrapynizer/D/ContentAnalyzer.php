@@ -8,27 +8,25 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ContentAnalyzer implements ContentAnalyzerInterface
 {
+    /**
+     * @var ProfileRepository
+     */
+    private $repository;
+
+    /**
+     * ContentAnalyzer constructor.
+     * @param ProfileRepository $repository
+     */
+    public function __construct(ProfileRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function analyze($path, ContainerInterface $container)
     {
-        /**
-            CREATE TABLE IF NOT EXISTS `developer`(
-                `id` INT PRIMARY KEY AUTO_INCREMENT,
-                `path` VARCHAR(255),
-                `city` VARCHAR(255),
-                `title` VARCHAR(255),
-                `category` VARCHAR(255),
-                `salary` INT(11),
-                `experience_year` TINYINT(1),
-                `experience_description` TEXT,
-                `skills` TEXT,
-                `achievement` TEXT,
-                `expect` TEXT
-            ) DEFAULT CHARACTER SET=utf8;
-         */
+        $profile = $this->getProfile($container->getCrawler());
 
-        dump($this->getProfile($container->getCrawler()));
-
-        throw new \Exception(__METHOD__);
+        $this->repository->save($path, $profile);
     }
 
     private function getProfile(Crawler $crawler)

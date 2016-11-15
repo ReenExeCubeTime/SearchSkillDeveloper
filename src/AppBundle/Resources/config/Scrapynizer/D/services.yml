@@ -2,6 +2,7 @@ parameters:
     uri: 'https://djinni.co/'
     pager_sequence_table: 'pd_sequence'
     profile_link_table: 'pd_profile_page_link'
+    profile_table: 'pd_profile'
     pager_root_path: '/developers/'
     pager_selector_next: '.next a'
     profile_link_selector: '.profile'
@@ -19,6 +20,13 @@ services:
         arguments:
             - '@doctrine.dbal.default_connection'
             - '%pager_sequence_table%'
+
+    pd.profile.repository:
+        public: false
+        class: 'AppBundle\Service\Scrapynizer\D\ProfileRepository'
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '%profile_table%'
 
     pd.sequence.pager:
         public: false
@@ -65,6 +73,8 @@ services:
     pd.content.analyzer:
         public: false
         class: 'AppBundle\Service\Scrapynizer\D\ContentAnalyzer'
+        arguments:
+            - '@pd.profile.repository'
 
     pd.target.scrap:
         public: false
