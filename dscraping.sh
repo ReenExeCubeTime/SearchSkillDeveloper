@@ -3,12 +3,13 @@
 startTime=`date +%s`
 
 STEPS=(
-    "d:sequence:scrap:target:list --limit=1"
+    "d:sequence:scrap:target:list --limit=5"
     "d:scrap:target"
 )
 
 for STEP in "${STEPS[@]}"
 do
+    echo $STEP
     while true; do
         bin/console $STEP
         EXIT_CODE=$?
