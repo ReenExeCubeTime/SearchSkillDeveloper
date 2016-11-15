@@ -4,7 +4,8 @@ namespace ReenExe\Scrapynizer\Scraper;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use ReenExe\Scrapynizer\Analyzer\ListContentAnalyzerInterface;
+use ReenExe\Scrapynizer\Analyzer\ContentAnalyzerInterface;
+use ReenExe\Scrapynizer\Content\Container;
 use ReenExe\Scrapynizer\Pager\PaginationHunterInterface;
 use ReenExe\Scrapynizer\Repository\ListContentRepositoryInterface;
 use Symfony\Component\DomCrawler\Crawler;
@@ -22,7 +23,7 @@ class SequenceScraper extends AbstractScraper implements ListScraperInterface
     protected $pager;
 
     /**
-     * @var ListContentAnalyzerInterface
+     * @var ContentAnalyzerInterface
      */
     protected $analyzer;
 
@@ -30,13 +31,13 @@ class SequenceScraper extends AbstractScraper implements ListScraperInterface
      * @param Client $client
      * @param ListContentRepositoryInterface $repository
      * @param PaginationHunterInterface $pager
-     * @param ListContentAnalyzerInterface $analyzer
+     * @param ContentAnalyzerInterface $analyzer
      */
     public function __construct(
         Client $client,
         ListContentRepositoryInterface $repository,
         PaginationHunterInterface $pager,
-        ListContentAnalyzerInterface $analyzer
+        ContentAnalyzerInterface $analyzer
     ) {
         $this->client = $client;
         $this->repository = $repository;
@@ -68,7 +69,7 @@ class SequenceScraper extends AbstractScraper implements ListScraperInterface
 
             $this->repository->save($nextPath, $html);
 
-            $this->analyzer->analyze($nextPath, $html, $crawler);
+            $this->analyzer->analyze($nextPath, new Container($html, $crawler));
 
             $nextPath = $this->pager->getNextPage($crawler);
         } while (--$limit && $nextPath);

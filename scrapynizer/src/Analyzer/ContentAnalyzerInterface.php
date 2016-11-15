@@ -2,12 +2,14 @@
 
 namespace ReenExe\Scrapynizer\Analyzer;
 
+use ReenExe\Scrapynizer\Content\ContainerInterface;
+
 interface ContentAnalyzerInterface
 {
     /**
      * @param $path
-     * @param $html
+     * @param ContainerInterface $container
      * @return mixed
      */
-    public function analyze($path, $html);
+    public function analyze($path, ContainerInterface $container);
 }

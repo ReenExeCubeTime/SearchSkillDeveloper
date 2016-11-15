@@ -3,10 +3,10 @@
 namespace AppBundle\Service\Scrapynizer\D;
 
 use AppBundle\Service\Scrapynizer\LinkCollectionAnalyzerInterface;
-use ReenExe\Scrapynizer\Analyzer\ListContentAnalyzerInterface;
-use Symfony\Component\DomCrawler\Crawler;
+use ReenExe\Scrapynizer\Analyzer\ContentAnalyzerInterface;
+use ReenExe\Scrapynizer\Content\ContainerInterface;
 
-class SequenceContentAnalyzer implements ListContentAnalyzerInterface
+class SequenceContentAnalyzer implements ContentAnalyzerInterface
 {
     /**
      * @var LinkCollectionAnalyzerInterface
@@ -18,8 +18,8 @@ class SequenceContentAnalyzer implements ListContentAnalyzerInterface
         $this->linkCollectionAnalyzer = $linkCollectionAnalyzer;
     }
 
-    public function analyze($path, $html, Crawler $crawler)
+    public function analyze($path, ContainerInterface $container)
     {
-        $this->linkCollectionAnalyzer->analyze($crawler);
+        $this->linkCollectionAnalyzer->analyze($container->getCrawler());
     }
 }
