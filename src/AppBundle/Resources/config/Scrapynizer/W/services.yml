@@ -5,7 +5,7 @@ parameters:
     profile_table: 'pw_profile'
     pager_root_path: '/ua/resumes-kyiv-it/'
     pager_selector_next: 'ul.pagination li.no-style a'
-    profile_link_selector: '.resume-link a'
+    profile_link_selector: '.resume-link a:last'
 
 services:
     pw.scrap.client:

@@ -30,7 +30,7 @@ class PathProcessRepository implements QueueRepositoryInterface, PathCollectionR
         $this->connection->beginTransaction();
 
         $statement = $this->connection->prepare("
-            INSERT INTO `$this->table`(`path`)
+            INSERT IGNORE INTO `$this->table`(`path`)
             VALUES (:path)
         ");
 
