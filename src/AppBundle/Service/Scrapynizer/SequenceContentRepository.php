@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Service\Scrapynizer\D;
+namespace AppBundle\Service\Scrapynizer;
 
-use ReenExe\Scrapynizer\Repository\ListContentRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use ReenExe\Scrapynizer\Repository\SequenceContentRepositoryInterface;
 
-class ListContentRepository implements ListContentRepositoryInterface
+class SequenceContentRepository implements SequenceContentRepositoryInterface
 {
     /**
      * @var Connection

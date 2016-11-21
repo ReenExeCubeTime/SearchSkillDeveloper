@@ -2,7 +2,7 @@
 
 namespace ReenExe\Scrapynizer\Repository;
 
-interface ListContentRepositoryInterface
+interface SequenceContentRepositoryInterface
 {
     /**
      * @return string

@@ -7,13 +7,13 @@ use GuzzleHttp\Exception\ClientException;
 use ReenExe\Scrapynizer\Analyzer\ContentAnalyzerInterface;
 use ReenExe\Scrapynizer\Content\Container;
 use ReenExe\Scrapynizer\Pager\PaginationHunterInterface;
-use ReenExe\Scrapynizer\Repository\ListContentRepositoryInterface;
+use ReenExe\Scrapynizer\Repository\SequenceContentRepositoryInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
 class SequenceScraper extends AbstractScraper implements ListScraperInterface
 {
     /**
-     * @var ListContentRepositoryInterface
+     * @var SequenceContentRepositoryInterface
      */
     protected $repository;
 
@@ -29,13 +29,13 @@ class SequenceScraper extends AbstractScraper implements ListScraperInterface
 
     /**
      * @param Client $client
-     * @param ListContentRepositoryInterface $repository
+     * @param SequenceContentRepositoryInterface $repository
      * @param PaginationHunterInterface $pager
      * @param ContentAnalyzerInterface $analyzer
      */
     public function __construct(
         Client $client,
-        ListContentRepositoryInterface $repository,
+        SequenceContentRepositoryInterface $repository,
         PaginationHunterInterface $pager,
         ContentAnalyzerInterface $analyzer
     ) {

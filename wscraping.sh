@@ -3,13 +3,13 @@
 startTime=`date +%s`
 
 STEPS=(
-    "w:scrap:skill:site:list"
-    "w:scrap:skill:site:page"
-    "w:create:skill:site:structure"
+    "w:sequence:scrap:target:list --limit=5"
+    "w:scrap:target"
 )
 
 for STEP in "${STEPS[@]}"
 do
+    echo $STEP
     while true; do
         bin/console $STEP
         EXIT_CODE=$?

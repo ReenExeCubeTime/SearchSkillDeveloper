@@ -1,113 +1,113 @@
 parameters:
-    uri: 'https://djinni.co/'
-    pager_sequence_table: 'pd_sequence'
-    profile_link_table: 'pd_profile_page_link'
-    profile_table: 'pd_profile'
-    pager_root_path: '/developers/'
-    pager_selector_next: '.next a'
-    profile_link_selector: '.profile'
+    uri: 'http://www.work.ua/'
+    pager_sequence_table: 'pw_sequence'
+    profile_link_table: 'pw_profile_page_link'
+    profile_table: 'pw_profile'
+    pager_root_path: '/ua/resumes/'
+    pager_selector_next: '.perpageNavigation a'
+    profile_link_selector: '.tblSearch .ttl a.bf'
 
 services:
-    pd.scrap.client:
+    pw.scrap.client:
         public: false
         class: 'GuzzleHttp\Client'
         arguments:
             - { base_uri: '%uri%' }
 
-    pd.sequence.repository:
+    pw.sequence.repository:
         public: false
         class: 'AppBundle\Service\Scrapynizer\SequenceContentRepository'
         arguments:
             - '@doctrine.dbal.default_connection'
             - '%pager_sequence_table%'
 
-    pd.profile.repository:
+    pw.profile.repository:
         public: false
         class: 'AppBundle\Service\Scrapynizer\D\ProfileRepository'
         arguments:
             - '@doctrine.dbal.default_connection'
             - '%profile_table%'
 
-    pd.sequence.pager:
+    pw.sequence.pager:
         public: false
         class: 'ReenExe\Scrapynizer\Pager\PaginationHunter'
         arguments:
             - '%pager_root_path%'
             - '%pager_selector_next%'
 
-    pd.sequence.link.collection.finder:
+    pw.sequence.link.collection.finder:
         public: false
         class: 'AppBundle\Service\Scrapynizer\LinkCollectionSelectorFinder'
         arguments:
             - '%profile_link_selector%'
 
-    pd.path.process.repository:
+    pw.path.process.repository:
         public: false
         class: 'AppBundle\Service\Scrapynizer\PathProcessRepository'
         arguments:
             - '@doctrine.dbal.default_connection'
             - '%profile_link_table%'
 
-    pd.link.collection.analyzer:
+    pw.link.collection.analyzer:
         public: false
         class: 'AppBundle\Service\Scrapynizer\LinkCollectionAnalyzer'
         arguments:
-            - '@pd.sequence.link.collection.finder'
-            - '@pd.path.process.repository'
+            - '@pw.sequence.link.collection.finder'
+            - '@pw.path.process.repository'
 
-    pd.sequence.analyzer:
+    pw.sequence.analyzer:
         public: false
         class: 'AppBundle\Service\Scrapynizer\D\SequenceContentAnalyzer'
         arguments:
-            - '@pd.link.collection.analyzer'
+            - '@pw.link.collection.analyzer'
 
-    pd.sequence.scraper:
+    pw.sequence.scraper:
         public: false
         class: 'ReenExe\Scrapynizer\Scraper\SequenceScraper'
         arguments:
-            - '@pd.scrap.client'
-            - '@pd.sequence.repository'
-            - '@pd.sequence.pager'
-            - '@pd.sequence.analyzer'
+            - '@pw.scrap.client'
+            - '@pw.sequence.repository'
+            - '@pw.sequence.pager'
+            - '@pw.sequence.analyzer'
 
-    pd.content.analyzer:
+    pw.content.analyzer:
         public: false
         class: 'AppBundle\Service\Scrapynizer\D\ContentAnalyzer'
         arguments:
-            - '@pd.profile.repository'
+            - '@pw.profile.repository'
 
-    pd.target.scrap:
+    pw.target.scrap:
         public: false
         class: 'ReenExe\Scrapynizer\Scraper\CollectionScraper'
         arguments:
-            - '@pd.scrap.client'
-            - '@pd.path.process.repository'
-            - '@pd.content.analyzer'
+            - '@pw.scrap.client'
+            - '@pw.path.process.repository'
+            - '@pw.content.analyzer'
 
-    pd.sequence.scrap.command.adapter:
+    pw.sequence.scrap.command.adapter:
         public: false
         class: 'AppBundle\Service\Scrapynizer\QueueCommandAdapter'
         arguments:
-            - '@pd.sequence.scraper'
+            - '@pw.sequence.scraper'
 
-    pd.scrap.target.command.adapter:
+    pw.scrap.target.command.adapter:
         public: false
         class: 'AppBundle\Service\Scrapynizer\QueueCommandAdapter'
         arguments:
-            - '@pd.target.scrap'
+            - '@pw.target.scrap'
 
-    pd.sequence.scrap.target.list.command:
+    pw.sequence.scrap.target.list.command:
         class: 'AppBundle\Command\Core\RunTimeQueueCommand'
         arguments:
-            - 'd:sequence:scrap:target:list'
-            - '@pd.sequence.scrap.command.adapter'
+            - 'w:sequence:scrap:target:list'
+            - '@pw.sequence.scrap.command.adapter'
         tags:
             -  { name: 'console.command' }
 
-    pd.scrap.target.command:
+    pw.scrap.target.command:
         class: 'AppBundle\Command\Core\RunTimeQueueCommand'
         arguments:
-            - 'd:scrap:target'
-            - '@pd.scrap.target.command.adapter'
+            - 'w:scrap:target'
+            - '@pw.scrap.target.command.adapter'
         tags:
             -  { name: 'console.command' }
