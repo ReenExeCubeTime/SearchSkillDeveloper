@@ -1,3 +1,2 @@
 imports:
     - { resource: "@AppBundle/Resources/config/Scrapynizer/W/services.yml" }
-    - { resource: "@AppBundle/Resources/config/Scrapynizer/D/services.yml" }

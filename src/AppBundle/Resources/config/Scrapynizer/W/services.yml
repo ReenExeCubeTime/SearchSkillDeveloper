@@ -3,9 +3,9 @@ parameters:
     pager_sequence_table: 'pw_sequence'
     profile_link_table: 'pw_profile_page_link'
     profile_table: 'pw_profile'
-    pager_root_path: '/ua/resumes/'
-    pager_selector_next: '.perpageNavigation a'
-    profile_link_selector: '.tblSearch .ttl a.bf'
+    pager_root_path: '/ua/resumes-kyiv-it/'
+    pager_selector_next: 'ul.pagination li.no-style a'
+    profile_link_selector: '.resume-link a'
 
 services:
     pw.scrap.client:
