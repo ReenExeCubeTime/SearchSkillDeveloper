@@ -34,7 +34,7 @@ class PathProcessRepository implements QueueRepositoryInterface, PathCollectionR
             VALUES (:path)
         ");
 
-        foreach ($list as $path) {
+        foreach (array_unique($list) as $path) {
             $statement->execute(compact('path'));
         }
 
