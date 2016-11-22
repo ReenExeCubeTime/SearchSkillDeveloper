@@ -2,34 +2,12 @@
 
 namespace AppBundle\Service\Scrapynizer\D;
 
-use ReenExe\Scrapynizer\Analyzer\ContentAnalyzerInterface;
-use ReenExe\Scrapynizer\Content\ContainerInterface;
+use AppBundle\Service\Scrapynizer\Common\AbstractProfileContentAnalyzer;
 use Symfony\Component\DomCrawler\Crawler;
 
-class ContentAnalyzer implements ContentAnalyzerInterface
+class ContentAnalyzer extends AbstractProfileContentAnalyzer
 {
-    /**
-     * @var ProfileRepository
-     */
-    private $repository;
-
-    /**
-     * ContentAnalyzer constructor.
-     * @param ProfileRepository $repository
-     */
-    public function __construct(ProfileRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
-    public function analyze($path, ContainerInterface $container)
-    {
-        $profile = $this->getProfile($container->getCrawler());
-
-        $this->repository->save($path, $profile);
-    }
-
-    private function getProfile(Crawler $crawler)
+    protected function getProfile(Crawler $crawler)
     {
         $body = $crawler->filter('body');
 
