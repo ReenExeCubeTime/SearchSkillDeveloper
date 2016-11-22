@@ -1,52 +1,52 @@
 parameters:
-    uri: 'http://www.work.ua/'
-    pager_sequence_table: 'pw_sequence'
-    profile_link_table: 'pw_profile_page_link'
-    profile_table: 'pw_profile'
-    pager_root_path: '/ua/resumes-kyiv-it/'
-    pager_selector_next: 'ul.pagination li.no-style a'
-    profile_link_selector: '.resume-link a:last'
+    pw.setting.uri: 'http://www.work.ua/'
+    pw.setting.pager_sequence_table: 'pw_sequence'
+    pw.setting.profile_link_table: 'pw_profile_page_link'
+    pw.setting.profile_table: 'pw_profile'
+    pw.setting.pager_root_path: '/ua/resumes-kyiv-it/'
+    pw.setting.pager_selector_next: 'ul.pagination li.no-style a'
+    pw.setting.profile_link_selector: '.resume-link a:last'
 
 services:
     pw.scrap.client:
         public: false
         class: 'GuzzleHttp\Client'
         arguments:
-            - { base_uri: '%uri%' }
+            - { base_uri: '%pw.setting.uri%' }
 
     pw.sequence.repository:
         public: false
         class: 'AppBundle\Service\Scrapynizer\SequenceContentRepository'
         arguments:
             - '@doctrine.dbal.default_connection'
-            - '%pager_sequence_table%'
+            - '%pw.setting.pager_sequence_table%'
 
     pw.profile.repository:
         public: false
         class: 'AppBundle\Service\Scrapynizer\D\ProfileRepository'
         arguments:
             - '@doctrine.dbal.default_connection'
-            - '%profile_table%'
+            - '%pw.setting.profile_table%'
 
     pw.sequence.pager:
         public: false
         class: 'ReenExe\Scrapynizer\Pager\PaginationHunter'
         arguments:
-            - '%pager_root_path%'
-            - '%pager_selector_next%'
+            - '%pw.setting.pager_root_path%'
+            - '%pw.setting.pager_selector_next%'
 
     pw.sequence.link.collection.finder:
         public: false
         class: 'AppBundle\Service\Scrapynizer\LinkCollectionSelectorFinder'
         arguments:
-            - '%profile_link_selector%'
+            - '%pw.setting.profile_link_selector%'
 
     pw.path.process.repository:
         public: false
         class: 'AppBundle\Service\Scrapynizer\PathProcessRepository'
         arguments:
             - '@doctrine.dbal.default_connection'
-            - '%profile_link_table%'
+            - '%pw.setting.profile_link_table%'
 
     pw.link.collection.analyzer:
         public: false

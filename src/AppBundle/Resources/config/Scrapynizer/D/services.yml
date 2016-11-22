@@ -1,52 +1,52 @@
 parameters:
-    uri: 'https://djinni.co/'
-    pager_sequence_table: 'pd_sequence'
-    profile_link_table: 'pd_profile_page_link'
-    profile_table: 'pd_profile'
-    pager_root_path: '/developers/'
-    pager_selector_next: '.next a'
-    profile_link_selector: '.profile'
+    pd.setting.uri: 'https://djinni.co/'
+    pd.setting.pager_sequence_table: 'pd_sequence'
+    pd.setting.profile_link_table: 'pd_profile_page_link'
+    pd.setting.profile_table: 'pd_profile'
+    pd.setting.pager_root_path: '/developers/'
+    pd.setting.pager_selector_next: '.next a'
+    pd.setting.profile_link_selector: '.profile'
 
 services:
     pd.scrap.client:
         public: false
         class: 'GuzzleHttp\Client'
         arguments:
-            - { base_uri: '%uri%' }
+            - { base_uri: '%pd.setting.uri%' }
 
     pd.sequence.repository:
         public: false
         class: 'AppBundle\Service\Scrapynizer\SequenceContentRepository'
         arguments:
             - '@doctrine.dbal.default_connection'
-            - '%pager_sequence_table%'
+            - '%pd.setting.pager_sequence_table%'
 
     pd.profile.repository:
         public: false
         class: 'AppBundle\Service\Scrapynizer\D\ProfileRepository'
         arguments:
             - '@doctrine.dbal.default_connection'
-            - '%profile_table%'
+            - '%pd.setting.profile_table%'
 
     pd.sequence.pager:
         public: false
         class: 'ReenExe\Scrapynizer\Pager\PaginationHunter'
         arguments:
-            - '%pager_root_path%'
-            - '%pager_selector_next%'
+            - '%pd.setting.pager_root_path%'
+            - '%pd.setting.pager_selector_next%'
 
     pd.sequence.link.collection.finder:
         public: false
         class: 'AppBundle\Service\Scrapynizer\LinkCollectionSelectorFinder'
         arguments:
-            - '%profile_link_selector%'
+            - '%pd.setting.profile_link_selector%'
 
     pd.path.process.repository:
         public: false
         class: 'AppBundle\Service\Scrapynizer\PathProcessRepository'
         arguments:
             - '@doctrine.dbal.default_connection'
-            - '%profile_link_table%'
+            - '%pd.setting.profile_link_table%'
 
     pd.link.collection.analyzer:
         public: false
