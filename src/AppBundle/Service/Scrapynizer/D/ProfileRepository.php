@@ -2,54 +2,11 @@
 
 namespace AppBundle\Service\Scrapynizer\D;
 
-use Doctrine\DBAL\Connection;
+use AppBundle\Service\Scrapynizer\Common\AbstractProfileRepository;
 
-class ProfileRepository
+class ProfileRepository extends AbstractProfileRepository
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
-
-    /**
-     * @var string
-     */
-    private $table;
-
-    /**
-     * @var bool
-     */
-    private $isNeedCreate = true;
-
-    /**
-     * ProfileRepository constructor.
-     * @param Connection $connection
-     * @param $table
-     */
-    public function __construct(Connection $connection, $table)
-    {
-        $this->connection = $connection;
-        $this->table = $table;
-    }
-
-    public function save($path, array $data)
-    {
-        $this->createOnce();
-
-        $data['path'] = $path;
-
-        $this->connection->insert($this->table, $data);
-    }
-
-    private function createOnce()
-    {
-        if ($this->isNeedCreate) {
-            $this->create();
-            $this->isNeedCreate = false;
-        }
-    }
-
-    private function create()
+    protected function create()
     {
         $this->connection->exec("
             CREATE TABLE IF NOT EXISTS `{$this->table}`(
