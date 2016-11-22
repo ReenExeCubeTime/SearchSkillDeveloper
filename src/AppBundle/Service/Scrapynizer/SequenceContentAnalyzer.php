@@ -1,8 +1,7 @@
 <?php
 
-namespace AppBundle\Service\Scrapynizer\D;
+namespace AppBundle\Service\Scrapynizer;
 
-use AppBundle\Service\Scrapynizer\LinkCollectionAnalyzerInterface;
 use ReenExe\Scrapynizer\Analyzer\ContentAnalyzerInterface;
 use ReenExe\Scrapynizer\Content\ContainerInterface;
 

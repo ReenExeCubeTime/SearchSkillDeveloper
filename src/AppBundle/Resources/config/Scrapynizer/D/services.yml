@@ -57,7 +57,7 @@ services:
 
     pd.sequence.analyzer:
         public: false
-        class: 'AppBundle\Service\Scrapynizer\D\SequenceContentAnalyzer'
+        class: 'AppBundle\Service\Scrapynizer\SequenceContentAnalyzer'
         arguments:
             - '@pd.link.collection.analyzer'
 

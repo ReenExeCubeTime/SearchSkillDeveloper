@@ -23,7 +23,7 @@ services:
 
     pw.profile.repository:
         public: false
-        class: 'AppBundle\Service\Scrapynizer\D\ProfileRepository'
+        class: 'AppBundle\Service\Scrapynizer\W\ProfileRepository'
         arguments:
             - '@doctrine.dbal.default_connection'
             - '%pw.setting.profile_table%'
@@ -57,7 +57,7 @@ services:
 
     pw.sequence.analyzer:
         public: false
-        class: 'AppBundle\Service\Scrapynizer\D\SequenceContentAnalyzer'
+        class: 'AppBundle\Service\Scrapynizer\SequenceContentAnalyzer'
         arguments:
             - '@pw.link.collection.analyzer'
 
@@ -72,7 +72,7 @@ services:
 
     pw.content.analyzer:
         public: false
-        class: 'AppBundle\Service\Scrapynizer\D\ContentAnalyzer'
+        class: 'AppBundle\Service\Scrapynizer\W\ContentAnalyzer'
         arguments:
             - '@pw.profile.repository'
 
