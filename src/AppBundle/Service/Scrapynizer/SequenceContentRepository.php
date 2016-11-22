@@ -37,7 +37,12 @@ class SequenceContentRepository implements SequenceContentRepositoryInterface
 
     public function save($path, $value)
     {
-        $this->connection->insert($this->table, [
+        $stmt = $this->connection->prepare("
+            INSERT IGNORE INTO `$this->table` (`path`, `value`)
+            VALUE (:path, :value);
+        ");
+
+        $stmt->execute([
             'path' => $path,
             'value' => $value,
         ]);
