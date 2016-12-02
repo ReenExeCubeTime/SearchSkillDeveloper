@@ -11,6 +11,7 @@ class ContentAnalyzer extends AbstractProfileContentAnalyzer
     {
         return [
             'title' => $this->getTitle($crawler),
+            'description' => $crawler->filter('head meta[property="og:description"]')->attr('content'),
             'city' => 'Київ',
         ];
     }
