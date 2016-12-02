@@ -99,7 +99,7 @@ services:
     pw.sequence.scrap.target.list.command:
         class: 'AppBundle\Command\Core\RunTimeQueueCommand'
         arguments:
-            - 'w:sequence:scrap:target:list'
+            - 'pw:sequence:scrap:target:list'
             - '@pw.sequence.scrap.command.adapter'
         tags:
             -  { name: 'console.command' }
@@ -107,7 +107,7 @@ services:
     pw.scrap.target.command:
         class: 'AppBundle\Command\Core\RunTimeQueueCommand'
         arguments:
-            - 'w:scrap:target'
+            - 'pw:scrap:target'
             - '@pw.scrap.target.command.adapter'
         tags:
             -  { name: 'console.command' }

@@ -99,7 +99,7 @@ services:
     pd.sequence.scrap.target.list.command:
         class: 'AppBundle\Command\Core\RunTimeQueueCommand'
         arguments:
-            - 'd:sequence:scrap:target:list'
+            - 'pd:sequence:scrap:target:list'
             - '@pd.sequence.scrap.command.adapter'
         tags:
             -  { name: 'console.command' }
@@ -107,7 +107,7 @@ services:
     pd.scrap.target.command:
         class: 'AppBundle\Command\Core\RunTimeQueueCommand'
         arguments:
-            - 'd:scrap:target'
+            - 'pd:scrap:target'
             - '@pd.scrap.target.command.adapter'
         tags:
             -  { name: 'console.command' }

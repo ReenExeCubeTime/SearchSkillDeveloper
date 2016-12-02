@@ -3,8 +3,8 @@
 startTime=`date +%s`
 
 STEPS=(
-    "d:sequence:scrap:target:list --limit=5"
-    "d:scrap:target"
+    "pd:sequence:scrap:target:list --limit=5"
+    "pd:scrap:target"
 )
 
 for STEP in "${STEPS[@]}"
