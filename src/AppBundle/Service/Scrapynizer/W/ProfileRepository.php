@@ -13,8 +13,9 @@ class ProfileRepository extends AbstractProfileRepository
                 `id` INT PRIMARY KEY AUTO_INCREMENT,
                 `path` VARCHAR(255),
                 `city` VARCHAR(255),
-                `full_name` VARCHAR(255),
                 `title` VARCHAR(255),
+                `full_name` VARCHAR(255),
+                `skill_source` TEXT,
                 `description` TEXT
             ) DEFAULT CHARACTER SET=utf8;
         ");
