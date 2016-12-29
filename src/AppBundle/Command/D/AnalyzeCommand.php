@@ -189,6 +189,16 @@ SQL;
         }
         $connection->commit();
 
+        $connection->exec('
+            UPDATE `city`
+            INNER JOIN (
+                SELECT `city`, COUNT(*) AS `count`
+                FROM `profile`
+                GROUP BY `city`
+            ) AS `profile_city` ON (`city`.`name` = `profile_city`.`city`)
+            SET `city`.`count` = `profile_city`.`count`;
+        ');
+
         $output->writeln([
             "<info>Execute:  $duration</info>",
             "<info>Memory:   $memory B</info>",
