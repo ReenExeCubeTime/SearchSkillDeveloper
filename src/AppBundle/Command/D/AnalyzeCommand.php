@@ -25,7 +25,9 @@ class AnalyzeCommand extends ContainerAwareCommand
         $cities = <<<'SQL'
             DROP TABLE IF EXISTS `city`;
             CREATE TABLE `city` (
-                `name` VARCHAR(255)
+                `name` VARCHAR(255),
+                `count` INT(11),
+                UNIQUE KEY `UNIQUE_NAME` (`name`)
             );
             INSERT INTO `city` (`name`) VALUES
             ('Киев'),
