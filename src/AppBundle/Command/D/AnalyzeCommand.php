@@ -25,6 +25,7 @@ class AnalyzeCommand extends ContainerAwareCommand
         $cities = <<<'SQL'
             DROP TABLE IF EXISTS `city`;
             CREATE TABLE `city` (
+                `alias` VARCHAR(255),
                 `name` VARCHAR(255),
                 `count` INT(11),
                 UNIQUE KEY `UNIQUE_NAME` (`name`)
@@ -196,7 +197,8 @@ SQL;
                 FROM `profile`
                 GROUP BY `city`
             ) AS `profile_city` ON (`city`.`name` = `profile_city`.`city`)
-            SET `city`.`count` = `profile_city`.`count`;
+            SET `city`.`count` = `profile_city`.`count`,
+                `city`.`alias` = CRC32(`city`.`name`);
         ');
 
         $output->writeln([
