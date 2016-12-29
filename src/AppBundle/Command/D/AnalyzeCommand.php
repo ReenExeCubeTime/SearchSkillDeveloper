@@ -139,6 +139,54 @@ SQL;
         }
         $connection->commit();
 
+        $connection->exec('
+            DROP TABLE IF EXISTS `profile`;
+            CREATE TABLE `profile` (
+                `id` INT PRIMARY KEY,
+                `link` VARCHAR(255),
+                `city` VARCHAR(255),
+                `title` VARCHAR(255),
+                `salary` INT(11),
+                `experience` TINYINT(1),
+                `description` TEXT,
+                `skills` TEXT
+            );
+        ');
+
+        $profileIdMap = array_column($sourceProfiles, null, 'id');
+        $profiles = [];
+        foreach ($profileIdSkillAliases as $profileId => $skills) {
+            $available = array_intersect_key(array_flip($skills), $skillAvailableAliasCountMap);
+
+            if ($available) {
+                $sourceProfile = $profileIdMap[$profileId];
+                $profiles[] = [
+                    'id' => $profileId,
+                    'link' => 'https://djinni.co' . $sourceProfile['path'],
+                    'city' => $sourceProfile['city'],
+                    'title' => $sourceProfile['title'],
+                    'salary' => $sourceProfile['salary'],
+                    'experience' => $sourceProfile['experience_year'],
+                    'description' => $sourceProfile['experience_description'],
+                    'skills' => json_encode(array_keys($available)),
+                ];
+            }
+        }
+
+        $availableProfileCount = count($profiles);
+        $output->writeln("<info>Available profiles:</info> $availableProfileCount");
+
+        $profileCreateStatement = $connection->prepare('
+            INSERT INTO `profile`
+            VALUE (:id, :link, :city, :title, :salary, :experience, :description, :skills);
+        ');
+
+        $connection->beginTransaction();
+        foreach ($profiles as $profile) {
+            $profileCreateStatement->execute($profile);
+        }
+        $connection->commit();
+
         $output->writeln([
             "<info>Execute:  $duration</info>",
             "<info>Memory:   $memory B</info>",
