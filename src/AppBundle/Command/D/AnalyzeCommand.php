@@ -50,7 +50,7 @@ SQL;
 
         $connection->exec($cities);
 
-        $skillStatement = $connection->prepare('
+        $profileStatement = $connection->prepare('
             SELECT *
             FROM `pd_profile`
             WHERE JSON_LENGTH(`skills`) > 0
@@ -59,9 +59,9 @@ SQL;
             )
         ');
 
-        $skillStatement->execute();
+        $profileStatement->execute();
 
-        $sourceProfiles = $skillStatement->fetchAll(\PDO::FETCH_ASSOC);
+        $sourceProfiles = $profileStatement->fetchAll(\PDO::FETCH_ASSOC);
         $sourceProfileIdSkillsMap = array_column($sourceProfiles, 'skills', 'id');
 
         $skillAliasNameCountMap = [];
@@ -115,6 +115,29 @@ SQL;
         $duration = microtime(true) - $startTime;
         $memory = memory_get_usage(true);
         $peak = memory_get_peak_usage(true);
+
+        $connection->exec('
+            DROP TABLE IF EXISTS `skill`;
+            CREATE TABLE `skill` (
+                `alias` VARCHAR(255),
+                `name` VARCHAR(255),
+                `count` INT(1)
+            );
+        ');
+
+        $skillCreateStatement = $connection->prepare('
+            INSERT INTO `skill`
+            VALUE (:alias, :name, :count);
+        ');
+        $connection->beginTransaction();
+        foreach ($skillAvailableAliasCountMap as $alias => $count) {
+            $skillCreateStatement->execute([
+                'alias' => $alias,
+                'name' => $skillAvailableAliasNameMap[$alias],
+                'count' => $count,
+            ]);
+        }
+        $connection->commit();
 
         $output->writeln([
             "<info>Execute:  $duration</info>",
