@@ -68,7 +68,7 @@ SQL;
         $skillAliasCountMap = [];
         $profileIdSkillAliases = [];
         foreach ($sourceProfileIdSkillsMap as $profileId => $sourceSkill) {
-            foreach (array_slice(json_decode($sourceSkill, true), 10) as $skill) {
+            foreach (array_slice(json_decode($sourceSkill, true), 0, 10) as $skill) {
                 if ($alias = preg_replace('/[^0-9a-z#+]/i', '', strtolower($skill['name']))) {
                     $skillAliasNameCountMap[$alias][$skill['name']] = isset($skillAliasNameCountMap[$alias][$skill['name']])
                         ? $skillAliasNameCountMap[$alias][$skill['name']] + 1
@@ -98,9 +98,9 @@ SQL;
 
         $availableSkillCount = count($skillAvailableAliasNameMap);
 
-        $output->writeln("<info>Available skills: $availableSkillCount</info>");
+        $output->writeln("<info>Available skills:</info> $availableSkillCount");
 
-        $top = 25;
+        $top = 50;
         $output->writeln("<info>Top $top skills:</info>");
         $rows = [];
         foreach (array_slice($skillAvailableAliasCountMap, 0, $top) as $alias => $count) {
