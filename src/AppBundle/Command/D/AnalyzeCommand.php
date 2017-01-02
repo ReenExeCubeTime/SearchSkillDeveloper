@@ -31,24 +31,24 @@ class AnalyzeCommand extends ContainerAwareCommand
                 UNIQUE KEY `UNIQUE_NAME` (`name`)
             );
             INSERT INTO `city` (`name`) VALUES
-            ('Киев'),
-            ('Харьков'),
-            ('Львов'),
-            ('Днепропетровск'),
-            ('Одесса'),
-            ('Украина'),
-            ('Винница'),
-            ('Николаев'),
-            ('Запорожье'),
-            ('Хмельницкий'),
-            ('Ивано-Франковск'),
-            ('Черкассы'),
-            ('Черновцы'),
-            ('Житомир'),
-            ('Чернигов'),
-            ('Симферополь'),
-            ('Донецк'),
-            ('Севастополь');
+            ('kyiv', 'Киев'),
+            ('kharkiv', 'Харьков'),
+            ('lviv', 'Львов'),
+            ('dnipro', 'Днепропетровск'),
+            ('odesa', 'Одесса'),
+            ('ukraine', 'Украина'),
+            ('vinnytsya', 'Винница'),
+            ('mykolaiv', 'Николаев'),
+            ('zaporizhzhya', 'Запорожье'),
+            ('khmelnytskyi', 'Хмельницкий'),
+            ('ivano-frankivsk', 'Ивано-Франковск'),
+            ('cherkasy', 'Черкассы'),
+            ('chernivtsi', 'Черновцы'),
+            ('zhytomyr', 'Житомир'),
+            ('chernihiv', 'Чернигов'),
+            ('simferopol', 'Симферополь'),
+            ('donetsk', 'Донецк'),
+            ('sevastopol', 'Севастополь');
 SQL;
 
         $connection->exec($cities);
@@ -197,8 +197,7 @@ SQL;
                 FROM `profile`
                 GROUP BY `city`
             ) AS `profile_city` ON (`city`.`name` = `profile_city`.`city`)
-            SET `city`.`count` = `profile_city`.`count`,
-                `city`.`alias` = CRC32(`city`.`name`);
+            SET `city`.`count` = `profile_city`.`count`;
         ');
 
         $output->writeln([
