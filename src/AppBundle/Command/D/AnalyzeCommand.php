@@ -12,7 +12,7 @@ class AnalyzeCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
-        $this->setName('pd:analyaze');
+        $this->setName('pd:analyze');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
