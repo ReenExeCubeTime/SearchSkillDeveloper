@@ -30,7 +30,7 @@ class AnalyzeCommand extends ContainerAwareCommand
                 `count` INT(11),
                 UNIQUE KEY `UNIQUE_NAME` (`name`)
             );
-            INSERT INTO `city` (`name`) VALUES
+            INSERT INTO `city` (`alias`, `name`) VALUES
             ('kyiv', 'Киев'),
             ('kharkiv', 'Харьков'),
             ('lviv', 'Львов'),
