@@ -71,15 +71,17 @@ SQL;
         $skillAliasCountMap = [];
         $profileIdSkillAliases = [];
         foreach ($sourceProfileIdSkillsMap as $profileId => $sourceSkill) {
-            foreach (array_slice(json_decode($sourceSkill, true), 0, 10) as $skill) {
+            foreach (array_slice(json_decode($sourceSkill, true), 0, 50) as $skill) {
                 if ($alias = preg_replace('/[^0-9a-z#+]/i', '', strtolower($skill['name']))) {
-                    $skillAliasNameCountMap[$alias][$skill['name']] = isset($skillAliasNameCountMap[$alias][$skill['name']])
-                        ? $skillAliasNameCountMap[$alias][$skill['name']] + 1
-                        : 1;
-                    $skillAliasCountMap[$alias] = isset($skillAliasCountMap[$alias])
-                        ? $skillAliasCountMap[$alias] + 1
-                        : 1;
-                    $profileIdSkillAliases[$profileId][] = $alias;
+                    $from = $skillAliasNameCountMap[$alias][$skill['name']] ?? 0;
+                    $skillAliasNameCountMap[$alias][$skill['name']] = $from + 1;
+                    $from = $skillAliasCountMap[$alias] ?? 0;
+                    $skillAliasCountMap[$alias] = $from + 1;
+
+                    $profileIdSkillAliases[$profileId][$alias] = [
+                        'alias' => $alias,
+                        'score' => $skill['score'],
+                    ];
                 }
             }
         }
@@ -146,34 +148,36 @@ SQL;
             DROP TABLE IF EXISTS `profile`;
             CREATE TABLE `profile` (
                 `id` INT PRIMARY KEY,
+                `external_id` CHAR(8),
                 `link` VARCHAR(255),
                 `city` VARCHAR(255),
                 `title` VARCHAR(255),
                 `salary` INT(11),
                 `experience` TINYINT(1),
                 `description` TEXT,
-                `skills` TEXT
+                `skills` TEXT,
+                UNIQUE KEY `UNIQUE_EXTERNAL_ID` (`external_id`)
             );
         ');
 
         $profileIdMap = array_column($sourceProfiles, null, 'id');
         $profiles = [];
-        foreach ($profileIdSkillAliases as $profileId => $skills) {
-            $available = array_intersect_key(array_flip($skills), $skillAvailableAliasCountMap);
+        foreach ($profileIdSkillAliases as $profileId => $aliasScoreMap) {
+            $profile = $profileIdMap[$profileId];
 
-            if ($available) {
-                $sourceProfile = $profileIdMap[$profileId];
-                $profiles[] = [
-                    'id' => $profileId,
-                    'link' => 'https://djinni.co' . $sourceProfile['path'],
-                    'city' => $sourceProfile['city'],
-                    'title' => $sourceProfile['title'],
-                    'salary' => $sourceProfile['salary'],
-                    'experience' => $sourceProfile['experience_year'],
-                    'description' => $sourceProfile['experience_description'],
-                    'skills' => json_encode(array_keys($available)),
-                ];
-            }
+            $externalId = str_replace(['/q/', '/'], '', $profile['path']);
+
+            $profiles[] = [
+                'id' => $profileId,
+                'externalId' => $externalId,
+                'link' => 'https://djinni.co' . $profile['path'],
+                'city' => $profile['city'],
+                'title' => $profile['title'],
+                'salary' => $profile['salary'],
+                'experience' => $profile['experience_year'],
+                'description' => $profile['experience_description'],
+                'skills' => json_encode(array_values($aliasScoreMap)),
+            ];
         }
 
         $availableProfileCount = count($profiles);
@@ -181,7 +185,7 @@ SQL;
 
         $profileCreateStatement = $connection->prepare('
             INSERT INTO `profile`
-            VALUE (:id, :link, :city, :title, :salary, :experience, :description, :skills);
+            VALUE (:id, :externalId, :link, :city, :title, :salary, :experience, :description, :skills);
         ');
 
         $connection->beginTransaction();
